@@ -1,7 +1,7 @@
 const PriorityPage = () => {
   return (
     <>
-      <p className="font-bold">Title of Priority Bank</p>
+      <h2 className="flex justify-center font-bold">Title of Priority Bank</h2>
     </>
   );
 };
