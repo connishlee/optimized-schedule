@@ -1,3 +1,4 @@
+// can keep if we want
 export const daysoftheweek = [
   "Sunday",
   "Monday",
@@ -8,7 +9,7 @@ export const daysoftheweek = [
   "Saturday",
 ];
 
-// all just sample data
+// all just sample data, needs to be updated weekly
 export const dates = [
   "2024-1-1",
   "2024-1-2",
@@ -19,9 +20,11 @@ export const dates = [
   "2024-1-7",
 ];
 
+// have to change DAY format if we want to input data
 export const sampleData = [
   {
     date: "2024-1-1",
+    day: "Sunday",
     time: "9:00 AM - 10:00 AM",
     title: "Team Standup Meeting",
     description:
@@ -31,6 +34,7 @@ export const sampleData = [
   },
   {
     date: "2024-1-1",
+    day: "Sunday",
     time: "10:00 AM - 11:00 AM",
     title: "Math Assignment Review",
     description:
@@ -40,6 +44,7 @@ export const sampleData = [
   },
   {
     date: "2024-1-2",
+    day: "Monday",
     time: "11:00 AM - 12:30 PM",
     title: "Client Presentation Preparation",
     description:
@@ -49,6 +54,7 @@ export const sampleData = [
   },
   {
     date: "2024-1-2",
+    day: "Monday",
     time: "1:00 PM - 2:30 PM",
     title: "Design Workshop",
     description:
@@ -58,6 +64,7 @@ export const sampleData = [
   },
   {
     date: "2024-1-3",
+    day: "Tuesday",
     time: "3:00 PM - 4:30 PM",
     title: "Project Sprint Planning",
     description:
