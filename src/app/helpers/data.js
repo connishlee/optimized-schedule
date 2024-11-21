@@ -8,9 +8,20 @@ export const daysoftheweek = [
   "Saturday",
 ];
 
+// all just sample data
+export const dates = [
+  "2024-1-1",
+  "2024-1-2",
+  "2024-1-3",
+  "2024-1-4",
+  "2024-1-5",
+  "2024-1-6",
+  "2024-1-7",
+];
+
 export const sampleData = [
   {
-    date: "2024-11-20",
+    date: "2024-1-1",
     time: "9:00 AM - 10:00 AM",
     title: "Team Standup Meeting",
     description:
@@ -19,7 +30,7 @@ export const sampleData = [
     timeframe: "1 hour",
   },
   {
-    date: "2024-11-20",
+    date: "2024-1-1",
     time: "10:00 AM - 11:00 AM",
     title: "Math Assignment Review",
     description:
@@ -28,7 +39,7 @@ export const sampleData = [
     timeframe: "1 hour",
   },
   {
-    date: "2024-11-20",
+    date: "2024-1-2",
     time: "11:00 AM - 12:30 PM",
     title: "Client Presentation Preparation",
     description:
@@ -37,7 +48,7 @@ export const sampleData = [
     timeframe: "1.5 hours",
   },
   {
-    date: "2024-11-20",
+    date: "2024-1-2",
     time: "1:00 PM - 2:30 PM",
     title: "Design Workshop",
     description:
@@ -46,7 +57,7 @@ export const sampleData = [
     timeframe: "1.5 hours",
   },
   {
-    date: "2024-11-20",
+    date: "2024-1-3",
     time: "3:00 PM - 4:30 PM",
     title: "Project Sprint Planning",
     description:

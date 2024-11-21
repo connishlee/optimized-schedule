@@ -23,6 +23,11 @@ export default function RootLayout({ children }) {
       lang="en"
       suppressHydrationWarning
     >
+      {/* <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css"
+      ></link>
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"></script> */}
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
