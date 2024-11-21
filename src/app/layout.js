@@ -13,7 +13,7 @@ const geistMono = localFont({
 });
 
 export const metadata = {
-  title: "Scheduling App",
+  title: "FocusHub",
   description: "Web App Dev Team",
 };
 
