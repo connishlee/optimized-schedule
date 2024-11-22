@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 
-import HamburgerIcon from "../helpers/hamburgerIcon";
+import IconHamburger from "../icons/hamburgerIcon";
+import IconDashboard from "../icons/dashboardIcon";
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
@@ -15,16 +16,24 @@ const Navbar = () => {
         } transition-all ease-in-out h-screen bg-slate-800`}
       >
         <div onClick={() => setOpen(!open)}>
-          <HamburgerIcon
+          <IconHamburger
             open={open}
             onClick={() => setOpen(!open)}
           />
         </div>
+        <div className="flex gap-x-4 items-center">
+          {/* insert IMAGE for dashboard */}
+          <IconDashboard className="duration-500 cursor-pointer" />
+          {/* <h1
+            className={`text-white origin-left font-bold text-xl duration-300 ${
+              !open && "scale-0"
+            }`}
+          >
+            Dashboard
+          </h1> */}
+        </div>
       </div>
-
-      <div className="p-7 text-2xl font-semibold flex-1 h-screen">
-        <h1>Home page</h1>
-      </div>
+      {/* have a logout button */}
     </div>
   );
 };

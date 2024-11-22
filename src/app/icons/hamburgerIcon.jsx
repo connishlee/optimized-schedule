@@ -1,4 +1,4 @@
-const HamburgerIcon = ({ open, onClick }) => {
+const IconHamburger = ({ open, onClick }) => {
   return (
     <div onClick={onClick}>
       <button className="relative group">
@@ -30,4 +30,4 @@ const HamburgerIcon = ({ open, onClick }) => {
   );
 };
 
-export default HamburgerIcon;
+export default IconHamburger;
