@@ -31,6 +31,7 @@ export const sampleData = [
       "Daily sync with the team to discuss project progress, roadblocks, and goals for the day.",
     location: "Zoom",
     timeframe: "1 hour",
+    priority: "yes",
   },
   {
     date: "2024-1-1",
@@ -41,6 +42,7 @@ export const sampleData = [
       "Review Chapter 5 problems on integrals and submit solutions by the end of the day.",
     location: "Library Study Room 3B",
     timeframe: "1 hour",
+    priority: "yes",
   },
   {
     date: "2024-1-2",
@@ -51,6 +53,7 @@ export const sampleData = [
       "Prepare slides and rehearse for the client presentation scheduled for Friday.",
     location: "Conference Room A",
     timeframe: "1.5 hours",
+    priority: "no",
   },
   {
     date: "2024-1-2",
@@ -61,6 +64,7 @@ export const sampleData = [
       "Collaborative workshop to brainstorm ideas for the upcoming UI/UX project.",
     location: "Design Lab",
     timeframe: "1.5 hours",
+    priority: "yes",
   },
   {
     date: "2024-1-2",
@@ -70,6 +74,7 @@ export const sampleData = [
     description: "Create and design Web App Development Presentation",
     location: "Design Lab",
     timeframe: "1.5 hours",
+    priority: "no",
   },
   {
     date: "2024-1-2",
@@ -79,6 +84,7 @@ export const sampleData = [
     description: "Finish Assignment 10",
     location: "Design Lab",
     timeframe: "1.5 hours",
+    priority: "no",
   },
   {
     date: "2024-1-2",
@@ -88,6 +94,7 @@ export const sampleData = [
     description: "Meet up with team @ Lower Dining Hall",
     location: "Design Lab",
     timeframe: "1.5 hours",
+    priority: "yes",
   },
   {
     date: "2024-1-3",
@@ -98,5 +105,6 @@ export const sampleData = [
       "Plan the next sprint for the development cycle and prioritize tasks.",
     location: "Online - Microsoft Teams",
     timeframe: "1.5 hours",
+    priority: "no",
   },
 ];

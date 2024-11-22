@@ -1,4 +1,5 @@
 import PriorityBank from "@/app/components/priority_bank";
+import Tasks from "@/app/components/tasks";
 
 const PriorityPage = () => {
   return (
