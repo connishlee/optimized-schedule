@@ -5,7 +5,11 @@ module.exports = {
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}", // If you have a components folder
   ],
   theme: {
-    extend: {},
+    extend: {
+      gridTemplateColumns: {
+        2: "repeat(2, 0.25fr)",
+      },
+    },
   },
   plugins: [],
 };
