@@ -44,11 +44,15 @@ export default function DashboardPage() {
     ];
     const today = new Date();
     const dayIndex = days.indexOf(day);
-    const currentDayIndex = today.getDay();
-    const diff = dayIndex - currentDayIndex;
-    const targetDate = new Date(today);
+    const diff = dayIndex - today.getDay();
+    const targetDate = new Date();
     targetDate.setDate(today.getDate() + diff);
-    return `January ${targetDate.getDate()}, 2024`;
+
+    return targetDate.toLocaleDateString("en-US", {
+      month: "long",
+      day: "numeric",
+      year: "numeric",
+    });
   };
 
   return (
