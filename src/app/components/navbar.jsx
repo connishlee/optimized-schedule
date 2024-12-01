@@ -3,6 +3,7 @@
 import { useState } from "react";
 
 import { SignOutButton } from "../components/signOut";
+import Link from "next/link";
 
 import IconDashboard from "../icons/dashboardIcon";
 import IconHamburger from "../icons/hamburgerIcon";
@@ -32,16 +33,14 @@ const Navbar = () => {
           >
             <IconDashboard className="text-white duration-500 cursor-pointer" />
             {open && (
-              <h1
-                // onClick={}
-                className="text-white font-bold text-lg duration-500"
-              >
-                Dashboard
-              </h1>
+              <Link href="/dashboard">
+                <h1 className="text-white font-bold text-lg duration-500">
+                  Dashboard
+                </h1>
+              </Link>
             )}
           </div>
 
-          {/* Priority */}
           <div
             className={`flex items-center gap-4 mt-6 ${
               open ? "flex-row" : "flex-col"
@@ -49,28 +48,18 @@ const Navbar = () => {
           >
             <IconCheck className="text-white duration-500 cursor-pointer" />
             {open && (
-              <h1
-                // onClick={}
-                className="text-white font-bold text-lg duration-500"
-              >
-                Priority
-              </h1>
+              <Link href="/priority">
+                <h1 className="text-white font-bold text-lg duration-500">
+                  Priority
+                </h1>
+              </Link>
             )}
           </div>
         </div>
 
         {/* Bottom Section */}
-        <div className="flex justify-center items-center w-full h-20">
-          <SignOutButton />
-          {open && (
-            <h1
-              // onClick={}
-              className="text-white font-bold text-lg duration-500"
-            >
-              Logout
-            </h1>
-          )}
-        </div>
+
+        <SignOutButton isOpen={open} />
       </div>
     </div>
   );
