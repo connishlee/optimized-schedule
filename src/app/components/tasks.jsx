@@ -1,4 +1,6 @@
 const Tasks = ({ data }) => {
+  console.log(data);
+
   return (
     <div className="flex flex-col md:flex-row py-4 transition-all">
       <li className="list-none">
