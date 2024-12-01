@@ -2,13 +2,15 @@
 import { useState, useEffect } from "react";
 
 import Tasks from "@/app/components/tasks";
-import TaskForm from "@/app/components/TaskForm";
+
+//working task Form
+// import TaskForm from "@/app/components/TaskForm";
+
+//test task Form
+import TaskForm from "@/app/components/testTaskForm";
 import Navbar from "@/app/components/navbar";
 
 import { getDayDate } from "@/app/helpers/getDate";
-
-// firebase functions: to get documents
-import { db } from "../../../../config/firebase";
 
 export default function DashboardPage() {
   const [selectedDay, setSelectedDay] = useState("Sunday");
@@ -77,16 +79,16 @@ export default function DashboardPage() {
         </div>
 
         {/* button to open and close menu */}
-        <button onClick={() => setOpenMenu(!openMenu)}>Edit</button>
-
+        {/* <button onClick={() => setOpenMenu(!openMenu)}>Edit</button> */}
+        <TaskForm />
         {/* beginning of sidebar div */}
-        <div
+        {/* <div
           className={`fixed inset-y-0 right-0 w-[400px] bg-[#1a1a1a] transform transition-transform duration-300 ease-in-out ${
             openMenu ? "translate-x-0" : "translate-x-full"
           }`}
         >
           {openMenu && <TaskForm selectedDay={selectedDay} />}
-        </div>
+        </div> */}
         {/* End of sidebar */}
       </div>
     </div>

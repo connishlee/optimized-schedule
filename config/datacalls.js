@@ -1,22 +1,21 @@
-import {
-  collection,
-  doc,
-  addDoc,
-  deleteDoc,
-  query,
-  getDocs,
-} from "firebase/firestore";
+import { collection, addDoc, query, getDocs } from "firebase/firestore";
 import { db } from "./firebase";
-import { currentUser } from "@clerk/nextjs/dist/types/server";
 
-// function to add Task
 export const addTasks = async (newTask) => {
-  const user = await currentUser();
-  if (newTask.name && newTask.quantity > 0) {
+  if (!newTask.userId) {
+    throw new Error("User not authenticated");
+  }
+
+  if (newTask.name) {
     await addDoc(collection(db, "tasks"), {
-      name: newTask.title,
+      name: newTask.name,
       description: newTask.description,
-      userId: user.id,
+      startTime: newTask.startTime,
+      endTime: newTask.endTime,
+      date: newTask.date,
+      day: newTask.day,
+      userId: newTask.userId,
+      createdAt: new Date(),
     });
   }
 };
