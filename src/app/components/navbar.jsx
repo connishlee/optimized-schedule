@@ -2,41 +2,74 @@
 
 import { useState } from "react";
 
-import { SignOutButton } from "@clerk/nextjs";
+import { SignOutButton } from "../components/signOut";
 
 import IconDashboard from "../icons/dashboardIcon";
 import IconHamburger from "../icons/hamburgerIcon";
+import IconCheck from "../icons/checkIcon";
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
 
   return (
     <div className="flex">
-      {/* Sidebar Navbar */}
       <div
         className={`${
-          open ? "w-64" : "w-20"
-        } flex flex-col justify-between transition-all ease-in-out h-screen bg-slate-800`}
+          open ? "w-60" : "w-20"
+        } flex flex-col justify-between transition-all ease-in-out h-screen bg-slate-700`}
       >
-        {/* Top Section */}
         <div>
-          {/* Hamburger Icon */}
           <div
             onClick={() => setOpen(!open)}
             className=""
           >
             <IconHamburger open={open} />
           </div>
-          {/* Dashboard Icon */}
-          <div className="flex flex-col items-center gap-6 mt-6">
+          <div
+            className={`flex items-center gap-4 mt-6 ${
+              open ? "flex-row" : "flex-col"
+            }`}
+          >
             <IconDashboard className="text-white duration-500 cursor-pointer" />
-            {open && <h1 className="font-bold">Dashboard</h1>}
+            {open && (
+              <h1
+                // onClick={}
+                className="text-white font-bold text-lg duration-500"
+              >
+                Dashboard
+              </h1>
+            )}
+          </div>
+
+          {/* Priority */}
+          <div
+            className={`flex items-center gap-4 mt-6 ${
+              open ? "flex-row" : "flex-col"
+            }`}
+          >
+            <IconCheck className="text-white duration-500 cursor-pointer" />
+            {open && (
+              <h1
+                // onClick={}
+                className="text-white font-bold text-lg duration-500"
+              >
+                Priority
+              </h1>
+            )}
           </div>
         </div>
 
         {/* Bottom Section */}
-        <div className="mb-4">
-          <SignOutButton className="text-white text-lg flex justify-center" />
+        <div className="flex justify-center items-center w-full h-20">
+          <SignOutButton />
+          {open && (
+            <h1
+              // onClick={}
+              className="text-white font-bold text-lg duration-500"
+            >
+              Logout
+            </h1>
+          )}
         </div>
       </div>
     </div>

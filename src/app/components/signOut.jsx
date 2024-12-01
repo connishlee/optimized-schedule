@@ -2,12 +2,17 @@
 
 import { useClerk } from "@clerk/nextjs";
 
+import IconPerson from "../icons/personIcon";
+
 export const SignOutButton = () => {
   const { signOut } = useClerk();
 
   return (
-    // Clicking this button signs out a user
-    // and redirects them to the home page "/".
-    <button onClick={() => signOut({ redirectUrl: "/" })}>Sign out</button>
+    <button
+      className=""
+      onClick={() => signOut({ redirectUrl: "/" })}
+    >
+      <IconPerson />
+    </button>
   );
 };
