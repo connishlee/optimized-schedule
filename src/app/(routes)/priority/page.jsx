@@ -1,13 +1,15 @@
 import PriorityBank from "@/app/components/priority_bank";
 
+import Navbar from "@/app/components/navbar";
+
 const PriorityPage = () => {
   return (
-    <>
-      <h1 className="flex justify-center font-bold text-4xl py-8">
-        Priority Bank
-      </h1>
-      <PriorityBank />
-    </>
+    <div className="min-h-screen bg-black text-white">
+      <div className="flex">
+        <Navbar />
+        <h1 className="text-3xl font-bold mb-12">Priority Bank</h1>
+      </div>
+    </div>
   );
 };
 
