@@ -1,4 +1,7 @@
-export const firebaseConfig = {
+import { initializeApp } from "firebase/app";
+import { getFirestore } from "firebase/firestore";
+
+const firebaseConfig = {
   apiKey: "AIzaSyC31HnVQNfHUnyiGmu9EYLh2u1iJn4Y2oA",
   authDomain: "optimized-schedule.firebaseapp.com",
   projectId: "optimized-schedule",
@@ -7,3 +10,7 @@ export const firebaseConfig = {
   appId: "1:652374700743:web:58a5f26140daaad435c4e2",
   measurementId: "G-BXSVXLXKLQ",
 };
+
+// initializes our firebase
+const app = initializeApp(firebaseConfig);
+export const db = getFirestore(app);

@@ -1,11 +1,19 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import Tasks from "@/app/components/tasks";
+import TaskForm from "@/app/components/TaskForm";
 import Navbar from "@/app/components/navbar";
 
+import { getDayDate } from "@/app/helpers/getDate";
+
+// firebase functions: to get documents
+import { db } from "../../../../config/firebase";
+
 export default function DashboardPage() {
-  const [selectedDay, setSelectedDay] = useState(null);
+  const [selectedDay, setSelectedDay] = useState("Sunday");
+  const [openMenu, setOpenMenu] = useState(false);
+
   const [tasks, setTasks] = useState({
     Sunday: [],
     Monday: [],
@@ -15,45 +23,6 @@ export default function DashboardPage() {
     Friday: [],
     Saturday: [],
   });
-
-  const [newTask, setNewTask] = useState({
-    name: "",
-    description: "",
-    startTime: "",
-    endTime: "",
-  });
-
-  const handleAddTask = (e) => {
-    e.preventDefault();
-    setTasks((prev) => ({
-      ...prev,
-      [selectedDay]: [...prev[selectedDay], newTask],
-    }));
-    setNewTask({ name: "", description: "", startTime: "", endTime: "" });
-  };
-
-  const getDayDate = (day) => {
-    const days = [
-      "Sunday",
-      "Monday",
-      "Tuesday",
-      "Wednesday",
-      "Thursday",
-      "Friday",
-      "Saturday",
-    ];
-    const today = new Date();
-    const dayIndex = days.indexOf(day);
-    const diff = dayIndex - today.getDay();
-    const targetDate = new Date();
-    targetDate.setDate(today.getDate() + diff);
-
-    return targetDate.toLocaleDateString("en-US", {
-      month: "long",
-      day: "numeric",
-      year: "numeric",
-    });
-  };
 
   return (
     <div className="min-h-screen bg-black text-white">
@@ -107,90 +76,16 @@ export default function DashboardPage() {
           </div>
         </div>
 
-        {/* why is this still conditionally rendering */}
-        {/* Sidebar entire sidebar needs to be a modal */}
+        {/* button to open and close menu */}
+        <button onClick={() => setOpenMenu(!openMenu)}>Edit</button>
+
+        {/* beginning of sidebar div */}
         <div
           className={`fixed inset-y-0 right-0 w-[400px] bg-[#1a1a1a] transform transition-transform duration-300 ease-in-out ${
-            selectedDay ? "translate-x-0" : "translate-x-full"
+            openMenu ? "translate-x-0" : "translate-x-full"
           }`}
         >
-          {selectedDay && (
-            <div className="h-full flex flex-col">
-              <div className="p-6 border-b border-gray-800">
-                <div className="flex justify-between items-center mb-4">
-                  <h2 className="text-xl font-bold">{selectedDay}</h2>
-                  <button
-                    onClick={() => setSelectedDay(null)}
-                    className="text-gray-400 hover:text-white"
-                  >
-                    ✕
-                  </button>
-                </div>
-                <div className="text-sm text-gray-500">
-                  {getDayDate(selectedDay)}
-                </div>
-              </div>
-
-              <div className="p-6 border-t border-gray-800">
-                <form
-                  onSubmit={handleAddTask}
-                  className="space-y-4"
-                >
-                  <div>
-                    <input
-                      type="text"
-                      placeholder="Task name"
-                      value={newTask.name}
-                      onChange={(e) =>
-                        setNewTask({ ...newTask, name: e.target.value })
-                      }
-                      className="w-full bg-gray-800 border border-gray-700 rounded-lg p-2.5 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-                      required
-                    />
-                  </div>
-
-                  <div className="flex gap-2">
-                    <input
-                      type="time"
-                      value={newTask.startTime}
-                      onChange={(e) =>
-                        setNewTask({ ...newTask, startTime: e.target.value })
-                      }
-                      className="flex-1 bg-gray-800 border border-gray-700 rounded-lg p-2.5 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-                      required
-                    />
-                    <input
-                      type="time"
-                      value={newTask.endTime}
-                      onChange={(e) =>
-                        setNewTask({ ...newTask, endTime: e.target.value })
-                      }
-                      className="flex-1 bg-gray-800 border border-gray-700 rounded-lg p-2.5 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-                      required
-                    />
-                  </div>
-
-                  <textarea
-                    placeholder="Description"
-                    value={newTask.description}
-                    onChange={(e) =>
-                      setNewTask({ ...newTask, description: e.target.value })
-                    }
-                    className="w-full bg-gray-800 border border-gray-700 rounded-lg p-2.5 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-                    rows={2}
-                    required
-                  />
-
-                  <button
-                    type="submit"
-                    className="w-full bg-purple-600 hover:bg-purple-700 text-white py-2.5 rounded-lg transition-all hover:shadow-lg hover:shadow-purple-500/20"
-                  >
-                    Add Task
-                  </button>
-                </form>
-              </div>
-            </div>
-          )}
+          {openMenu && <TaskForm selectedDay={selectedDay} />}
         </div>
         {/* End of sidebar */}
       </div>

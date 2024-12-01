@@ -1,9 +1,11 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
-export default function TaskForm() {
+import { getDayDate } from "@/app/helpers/getDate";
+
+export default function TaskForm({ selectedDay }) {
   const router = useRouter();
-  const [task, setTask] = useState({
+  const [tasks, setTasks] = useState({
     day: "",
     date: "",
     name: "",
@@ -16,6 +18,22 @@ export default function TaskForm() {
     const selectedDay = e.target.value;
     const date = getDateForDay(selectedDay);
     setTask((prev) => ({ ...prev, day: selectedDay, date }));
+  };
+
+  const [newTask, setNewTask] = useState({
+    name: "",
+    description: "",
+    startTime: "",
+    endTime: "",
+  });
+
+  const handleAddTask = (e) => {
+    e.preventDefault();
+    setTasks((prev) => ({
+      ...prev,
+      [selectedDay]: [...prev[selectedDay], newTask],
+    }));
+    setNewTask({ name: "", description: "", startTime: "", endTime: "" });
   };
 
   const getDateForDay = (day) => {
@@ -63,105 +81,78 @@ export default function TaskForm() {
   };
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="space-y-4 p-4 bg-white rounded-lg shadow"
-    >
-      <div>
-        <label className="block text-sm font-medium text-gray-700">Day</label>
-        <select
-          value={task.day}
-          onChange={handleDayChange}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-          required
+    <div className="h-full flex flex-col">
+      <div className="p-6 border-b border-gray-800">
+        <div className="flex justify-between items-center mb-4">
+          <h2 className="text-xl font-bold">{selectedDay}</h2>
+
+          {/* close button */}
+          <button
+            onClick={() => setSelectedDay(null)}
+            className="text-gray-400 hover:text-white"
+          >
+            ✕
+          </button>
+        </div>
+        <div className="text-sm text-gray-500">{getDayDate(selectedDay)}</div>
+      </div>
+
+      <div className="p-6 border-t border-gray-800">
+        <form
+          onSubmit={handleAddTask}
+          className="space-y-4"
         >
-          <option value="">Select a day</option>
-          {[
-            "Monday",
-            "Tuesday",
-            "Wednesday",
-            "Thursday",
-            "Friday",
-            "Saturday",
-            "Sunday",
-          ].map((day) => (
-            <option
-              key={day}
-              value={day}
-            >
-              {day}
-            </option>
-          ))}
-        </select>
-      </div>
+          <div>
+            <input
+              type="text"
+              placeholder="Task name"
+              value={newTask.name}
+              onChange={(e) => setNewTask({ ...newTask, name: e.target.value })}
+              className="w-full bg-gray-800 border border-gray-700 rounded-lg p-2.5 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+              required
+            />
+          </div>
 
-      <div>
-        <label className="block text-sm font-medium text-gray-700">
-          Task Name
-        </label>
-        <input
-          type="text"
-          value={task.name}
-          onChange={(e) =>
-            setTask((prev) => ({ ...prev, name: e.target.value }))
-          }
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-          required
-        />
-      </div>
+          <div className="flex gap-2">
+            <input
+              type="time"
+              value={newTask.startTime}
+              onChange={(e) =>
+                setNewTask({ ...newTask, startTime: e.target.value })
+              }
+              className="flex-1 bg-gray-800 border border-gray-700 rounded-lg p-2.5 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+              required
+            />
+            <input
+              type="time"
+              value={newTask.endTime}
+              onChange={(e) =>
+                setNewTask({ ...newTask, endTime: e.target.value })
+              }
+              className="flex-1 bg-gray-800 border border-gray-700 rounded-lg p-2.5 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+              required
+            />
+          </div>
 
-      <div className="grid grid-cols-2 gap-4">
-        <div>
-          <label className="block text-sm font-medium text-gray-700">
-            Start Time
-          </label>
-          <input
-            type="time"
-            value={task.startTime}
+          <textarea
+            placeholder="Description"
+            value={newTask.description}
             onChange={(e) =>
-              setTask((prev) => ({ ...prev, startTime: e.target.value }))
+              setNewTask({ ...newTask, description: e.target.value })
             }
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+            className="w-full bg-gray-800 border border-gray-700 rounded-lg p-2.5 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+            rows={2}
             required
           />
-        </div>
-        <div>
-          <label className="block text-sm font-medium text-gray-700">
-            End Time
-          </label>
-          <input
-            type="time"
-            value={task.endTime}
-            onChange={(e) =>
-              setTask((prev) => ({ ...prev, endTime: e.target.value }))
-            }
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-            required
-          />
-        </div>
-      </div>
 
-      <div>
-        <label className="block text-sm font-medium text-gray-700">
-          Description
-        </label>
-        <textarea
-          value={task.description}
-          onChange={(e) =>
-            setTask((prev) => ({ ...prev, description: e.target.value }))
-          }
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-          rows={3}
-          required
-        />
+          <button
+            type="submit"
+            className="w-full bg-purple-600 hover:bg-purple-700 text-white py-2.5 rounded-lg transition-all hover:shadow-lg hover:shadow-purple-500/20"
+          >
+            Add Task
+          </button>
+        </form>
       </div>
-
-      <button
-        type="submit"
-        className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-      >
-        Add Task
-      </button>
-    </form>
+    </div>
   );
 }
