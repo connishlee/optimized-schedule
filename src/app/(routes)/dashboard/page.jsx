@@ -2,6 +2,7 @@
 import { useState } from "react";
 
 import Tasks from "@/app/components/tasks";
+import Navbar from "@/app/components/navbar";
 
 export default function DashboardPage() {
   const [selectedDay, setSelectedDay] = useState(null);
@@ -53,6 +54,7 @@ export default function DashboardPage() {
   return (
     <div className="min-h-screen bg-black text-white">
       <div className="flex">
+        <Navbar />
         {/* Main Content */}
         <div className="flex-1 p-8">
           <h1 className="text-3xl font-bold mb-12">Schedule</h1>
