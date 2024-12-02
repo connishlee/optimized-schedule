@@ -1,46 +1,108 @@
-import React from "react";
-import Tasks from "@/app/components/tasks";
-import { sampleData, dates, daysoftheweek } from "@/app/helpers/data";
+"use client";
+import React, { useState, useEffect } from 'react';
+import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
+import Tasks from "./tasks";
+import { readTasks } from "../../../config/datacalls";
 
 const PriorityBank = () => {
-  // Filter tasks by priority
-  const priorityTasks = sampleData.filter((task) => task.priority === "yes");
+  const [tasks, setTasks] = useState([]);
+  const [isUpdating, setIsUpdating] = useState(false);
 
-  // Group filtered tasks by date
-  const tasksByDate = priorityTasks.reduce((acc, task) => {
-    acc[task.date] = acc[task.date] || [];
-    acc[task.date].push(task);
-    return acc;
-  }, {});
+  useEffect(() => {
+    const updateTasks = (retrievedTasks) => {
+      setTasks(retrievedTasks);
+    };
+
+    const stopListening = readTasks(updateTasks);
+    return () => stopListening();
+  }, []);
+
+  const handleDragEnd = (result) => {
+    if (!result.destination) return;
+
+    const reorderedTasks = Array.from(tasks);
+    const [removed] = reorderedTasks.splice(result.source.index, 1);
+    reorderedTasks.splice(result.destination.index, 0, removed);
+
+    setTasks(reorderedTasks);
+  };
 
   return (
-    <div className="bg-slate-900 p-8 rounded-lg shadow-lg">
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-        {dates.map((date, index) => (
-          <div
-            key={date}
-            className="relative bg-slate-800 p-4 rounded-lg shadow-md"
-          >
-            <button className="absolute top-2 right-2 text-sm text-white bg-blue-600 hover:bg-blue-700 px-2 py-1 rounded shadow">
-              Edit
-            </button>
-            <h2 className="text-xl font-bold text-white mb-4">
-              {daysoftheweek[index]} ({date})
-            </h2>
-            <ul className="space-y-4">
-              {tasksByDate[date] ? (
-                tasksByDate[date].map((task, idx) => (
-                  <Tasks
-                    key={idx}
-                    data={task}
-                  />
-                ))
-              ) : (
-                <p className="text-gray-400">No priority tasks for this day</p>
-              )}
-            </ul>
-          </div>
-        ))}
+    <div className="p-8 w-full">
+      <div className="bg-gray-900 rounded-lg p-6 shadow-lg">
+        <div className="flex justify-between items-center mb-6">
+          <h2 className="text-2xl font-bold">Priority Rankings</h2>
+          {isUpdating && (
+            <span className="text-sm text-gray-400">Updating priorities...</span>
+          )}
+        </div>
+        
+        <DragDropContext onDragEnd={handleDragEnd}>
+          <Droppable droppableId="priority-list">
+            {(provided) => (
+              <div
+                {...provided.droppableProps}
+                ref={provided.innerRef}
+                className="space-y-4"
+              >
+                {tasks.map((task, index) => (
+                  <Draggable
+                    key={task.id}
+                    draggableId={task.id}
+                    index={index}
+                  >
+                    {(provided, snapshot) => (
+                      <div
+                        ref={provided.innerRef}
+                        {...provided.draggableProps}
+                        className={`
+                          relative bg-gray-800 rounded-lg shadow-md
+                          ${snapshot.isDragging ? 'opacity-75' : 'opacity-100'}
+                          transition-all duration-200
+                        `}
+                      >
+                        {/* Drag Handle */}
+                        <div 
+                          {...provided.dragHandleProps}
+                          className="absolute left-0 top-0 bottom-0 w-8 flex items-center justify-center cursor-grab active:cursor-grabbing"
+                        >
+                          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-gray-400">
+                            <circle cx="12" cy="7" r="1"/>
+                            <circle cx="12" cy="12" r="1"/>
+                            <circle cx="12" cy="17" r="1"/>
+                          </svg>
+                        </div>
+
+                        <div className="pl-10 p-4">
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center space-x-4">
+                              <span className="text-lg font-semibold text-gray-400">
+                                #{index + 1}
+                              </span>
+                              <div className="flex-1">
+                                <Tasks data={task} />
+                              </div>
+                            </div>
+                            <div className="text-sm text-gray-400">
+                              {task.day}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </Draggable>
+                ))}
+                {provided.placeholder}
+              </div>
+            )}
+          </Droppable>
+        </DragDropContext>
+
+        <div className="mt-4 p-4 bg-gray-800 rounded">
+          <p className="text-sm text-gray-400">
+            Total tasks loaded: {tasks.length}
+          </p>
+        </div>
       </div>
     </div>
   );
