@@ -84,13 +84,16 @@ export default function DashboardPage() {
             </div>
 
             {/* Tasks List */}
-            <div className="flex-1 overflow-y-auto ml-8 space-y-4">
-              {tasks[selectedDay]?.map((task, index) => (
-                <Tasks
-                  data={task}
-                  key={index}
-                />
-              ))}
+            <div className="flex-1 ml-8">
+              {/* Scrollable container */}
+              <div className="space-y-4 w-128 bg-gray-900 pl-8 rounded-lg max-h-[560px] overflow-y-auto shadow-md scrollbar-track-black scrollbar-thumb-rounded-full scrollbar-track-transparent">
+                {tasks[selectedDay]?.map((task, index) => (
+                  <Tasks
+                    data={task}
+                    key={index}
+                  />
+                ))}
+              </div>
             </div>
           </div>
         </div>

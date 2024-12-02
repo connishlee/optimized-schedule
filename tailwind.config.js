@@ -9,7 +9,13 @@ module.exports = {
       gridTemplateColumns: {
         2: "repeat(2, 0.25fr)",
       },
+      width: {
+        128: "26rem",
+      },
     },
   },
-  plugins: [],
+  plugins: [require("tailwind-scrollbar")],
+  variants: {
+    scrollbar: ["rounded"],
+  },
 };
