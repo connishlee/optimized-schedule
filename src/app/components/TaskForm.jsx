@@ -4,10 +4,13 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useUser } from "@clerk/nextjs";
 import { addTasks } from "../../../config/datacalls";
-import { getDayDate } from "@/app/helpers/getDate"; // Helper function to format date
+import { getDayDate } from "@/app/helpers/getDate";
 
-export default function TaskForm({ selectedDay, isOpen }) {
+export default function TaskForm({ selectedDay, closeModal }) {
   const router = useRouter();
+  const { user } = useUser();
+
+  // State to hold form inputs
   const [task, setTask] = useState({
     name: "",
     description: "",
@@ -15,6 +18,7 @@ export default function TaskForm({ selectedDay, isOpen }) {
     endTime: "",
     day: selectedDay || "",
     date: selectedDay ? getDayDate(selectedDay) : "",
+    userId: user?.id || "", // User ID from Clerk
   });
 
   // Handle input changes for all fields
@@ -27,8 +31,15 @@ export default function TaskForm({ selectedDay, isOpen }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if (!user) {
+      console.error("User not logged in");
+      return;
+    }
+
     try {
-      await addTasks(task); // Save the task to Firestore
+      await addTasks(task); // Add task to Firestore
+      console.log("Task added successfully");
+
       router.refresh(); // Refresh the page/state after submission
       setTask({
         name: "",
@@ -37,8 +48,9 @@ export default function TaskForm({ selectedDay, isOpen }) {
         endTime: "",
         day: "",
         date: "",
+        userId: user?.id,
       });
-      setSelectedDay(null); // Close the modal
+      closeModal(); // Close the modal
     } catch (error) {
       console.error("Error adding task:", error);
     }
@@ -51,7 +63,7 @@ export default function TaskForm({ selectedDay, isOpen }) {
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl font-bold">{task.day}</h2>
           <button
-            onClick={() => isOpen} // Close modal
+            onClick={closeModal} // Close the modal
             className="text-gray-400 hover:text-white"
           >
             ✕
