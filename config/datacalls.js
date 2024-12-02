@@ -2,8 +2,8 @@ import { collection, addDoc, query, onSnapshot, doc, writeBatch, updateDoc } fro
 import { db } from "./firebase";
 
 // Your existing addTasks function
-export const addTasks = async (newTask) => {
-  if (!newTask.userId) {
+export const addTasks = async (newTask, user) => {
+  if (!user?.id) {
     throw new Error("User not authenticated");
   }
 
