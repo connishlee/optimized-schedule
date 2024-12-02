@@ -11,7 +11,6 @@ import { readTasks } from "../../../../config/datacalls";
 
 export default function DashboardPage() {
   const [selectedDay, setSelectedDay] = useState("Sunday");
-  const [openMenu, setOpenMenu] = useState(false);
 
   const [tasks, setTasks] = useState({
     Sunday: [],
@@ -82,12 +81,6 @@ export default function DashboardPage() {
             {/* Tasks List */}
             <div className="flex-1 ml-8">
               {/* Scrollable container */}
-              <button
-                className="bg-gray-500 rounded h-10 p-2 hover:bg-gray-800"
-                onClick={() => setOpenMenu(!openMenu)}
-              >
-                Add Tasks
-              </button>
               <div className="space-y-4 my-4 w-128 bg-gray-900 pl-8 rounded-lg max-h-[500px] overflow-y-auto shadow-md scrollbar-track-black scrollbar-thumb-rounded-full scrollbar-track-transparent">
                 {tasks[selectedDay]?.map((task, index) => (
                   <Tasks
@@ -102,15 +95,10 @@ export default function DashboardPage() {
 
         <div
           className={`fixed inset-y-0 right-0 w-[400px] bg-[#1a1a1a] transform transition-transform duration-300 ease-in-out ${
-            openMenu ? "translate-x-0" : "translate-x-full"
+            selectedDay ? "translate-x-0" : "translate-x-full"
           }`}
         >
-          {openMenu && (
-            <TaskForm
-              selectedDay={selectedDay}
-              isOpen={() => setOpenMenu(opennMenu)}
-            />
-          )}
+          {selectedDay && <TaskForm selectedDay={selectedDay} />}
         </div>
       </div>
     </div>

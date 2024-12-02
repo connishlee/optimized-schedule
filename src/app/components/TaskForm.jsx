@@ -30,17 +30,18 @@ export default function TaskForm({ selectedDay, closeModal }) {
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    console.log(user.id);
     if (!user) {
       console.error("User not logged in");
+      // Display an error message or notification to the user
       return;
     }
 
     try {
-      await addTasks(task); // Add task to Firestore
+      await addTasks(task, user);
       console.log("Task added successfully");
 
-      router.refresh(); // Refresh the page/state after submission
+      router.refresh();
       setTask({
         name: "",
         description: "",
@@ -50,9 +51,9 @@ export default function TaskForm({ selectedDay, closeModal }) {
         date: "",
         userId: user?.id,
       });
-      closeModal(); // Close the modal
     } catch (error) {
       console.error("Error adding task:", error);
+      alert("Failed to add task. Please try again later.");
     }
   };
 

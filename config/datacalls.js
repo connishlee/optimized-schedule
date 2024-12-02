@@ -2,8 +2,8 @@ import { collection, addDoc, query, onSnapshot } from "firebase/firestore";
 import { db } from "./firebase";
 
 // functioning addTask
-export const addTasks = async (newTask) => {
-  if (!newTask.userId) {
+export const addTasks = async (newTask, user) => {
+  if (!user?.id) {
     throw new Error("User not authenticated");
   }
 
@@ -15,7 +15,7 @@ export const addTasks = async (newTask) => {
       endTime: newTask.endTime,
       date: newTask.date,
       day: newTask.day,
-      userId: newTask.userId,
+      userId: user.id,
       createdAt: new Date(),
     });
   }
