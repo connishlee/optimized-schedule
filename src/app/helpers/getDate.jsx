@@ -10,9 +10,9 @@ export const getDayDate = (day) => {
   ];
   const today = new Date();
   const dayIndex = days.indexOf(day);
-  const diff = dayIndex - today.getDay();
-  const targetDate = new Date();
-  targetDate.setDate(today.getDate() + diff);
+  const targetDate = new Date(
+    today.getTime() + (dayIndex - today.getDay()) * 86400000
+  );
 
   return targetDate.toLocaleDateString("en-US", {
     month: "long",

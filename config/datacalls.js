@@ -1,7 +1,6 @@
 import { collection, addDoc, query, onSnapshot, doc, writeBatch, updateDoc } from "firebase/firestore";
 import { db } from "./firebase";
 
-// Your existing addTasks function
 export const addTasks = async (newTask, user) => {
   if (!user?.id) {
     throw new Error("User not authenticated");
@@ -15,7 +14,7 @@ export const addTasks = async (newTask, user) => {
       endTime: newTask.endTime,
       date: newTask.date,
       day: newTask.day,
-      userId: newTask.userId,
+      userId: user.id,
       createdAt: new Date(),
       priority: 0, // Adding default priority
     });

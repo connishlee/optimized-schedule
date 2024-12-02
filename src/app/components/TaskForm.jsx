@@ -4,17 +4,22 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useUser } from "@clerk/nextjs";
 import { addTasks } from "../../../config/datacalls";
-import { getDayDate } from "@/app/helpers/getDate"; // Helper function to format date
+import { getDayDate } from "@/app/helpers/getDate";
 
-export default function TaskForm({ selectedDay, setSelectedDay }) {
+export default function TaskForm({ selectedDay, date }) {
+  console.log("date: " + date);
   const router = useRouter();
+  const { user } = useUser();
+
+  // State to hold form inputs
   const [task, setTask] = useState({
     name: "",
     description: "",
     startTime: "",
     endTime: "",
     day: selectedDay || "",
-    date: selectedDay ? getDayDate(selectedDay) : "",
+    date: date || "",
+    userId: user?.id || "",
   });
 
   // Handle input changes for all fields
@@ -26,10 +31,18 @@ export default function TaskForm({ selectedDay, setSelectedDay }) {
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log(user.id);
+    if (!user) {
+      console.error("User not logged in");
+      // Display an error message or notification to the user
+      return;
+    }
 
     try {
-      await addTasks(task); // Save the task to Firestore
-      router.refresh(); // Refresh the page/state after submission
+      await addTasks(task, user);
+      console.log("Task added successfully");
+
+      router.refresh();
       setTask({
         name: "",
         description: "",
@@ -37,10 +50,11 @@ export default function TaskForm({ selectedDay, setSelectedDay }) {
         endTime: "",
         day: "",
         date: "",
+        userId: user?.id,
       });
-      setSelectedDay(null); // Close the modal
     } catch (error) {
       console.error("Error adding task:", error);
+      alert("Failed to add task. Please try again later.");
     }
   };
 
@@ -49,15 +63,9 @@ export default function TaskForm({ selectedDay, setSelectedDay }) {
       {/* Modal Header */}
       <div className="p-6 border-b border-gray-800">
         <div className="flex justify-between items-center mb-4">
-          <h2 className="text-xl font-bold">{task.day}</h2>
-          <button
-            onClick={() => setSelectedDay(null)} // Close modal
-            className="text-gray-400 hover:text-white"
-          >
-            ✕
-          </button>
+          <h2 className="text-xl font-bold">{selectedDay}</h2>
         </div>
-        <div className="text-sm text-gray-500">{task.date}</div>
+        <div className="text-sm text-gray-500">{date}</div>
       </div>
 
       {/* Modal Form */}
