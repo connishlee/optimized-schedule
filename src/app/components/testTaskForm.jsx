@@ -1,5 +1,5 @@
 import { useUser } from "@clerk/nextjs";
-import { addTasks } from "../../../config/datacalls";
+import { addTasks, readTasks } from "../../../config/datacalls";
 
 export default function TaskForm() {
   const { user } = useUser(); // Fetch user info client-side
@@ -11,18 +11,20 @@ export default function TaskForm() {
     }
 
     const newTask = {
-      name: "Sample Task",
+      name: "Sample Task number 3",
       description: "This is a sample task",
       startTime: "10:00",
       endTime: "12:00",
       date: "2024-12-02",
-      day: "Monday",
+      day: "Sunday",
       userId: user.id, // Pass userId
     };
 
     try {
       console.log(newTask);
       await addTasks(newTask);
+      const finalData = await readTasks();
+      console.log("finalData:" + finalData);
       console.log("Task added successfully");
     } catch (error) {
       console.error("Error adding task:", error);

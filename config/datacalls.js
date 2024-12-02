@@ -1,6 +1,7 @@
-import { collection, addDoc, query, getDocs } from "firebase/firestore";
+import { collection, addDoc, query, onSnapshot } from "firebase/firestore";
 import { db } from "./firebase";
 
+// functioning addTask
 export const addTasks = async (newTask) => {
   if (!newTask.userId) {
     throw new Error("User not authenticated");
@@ -20,15 +21,24 @@ export const addTasks = async (newTask) => {
   }
 };
 
-// function to get Items from inventory
-export const readTasks = async () => {
-  const q = query(collection(db, "tasks"));
-  const querySnapshot = await getDocs(q);
-  let itemsArr = [];
-  querySnapshot.forEach((doc) => {
-    itemsArr.push({ ...doc.data(), id: doc.id });
-  });
-  return itemsArr;
+// function to get retrieve all Tasks in real time with Snapshot
+export const readTasks = (onTasksUpdate) => {
+  const tasksCollection = collection(db, "tasks");
+  // listens for updates
+  const stopListening = onSnapshot(
+    tasksCollection,
+    (snapshot) => {
+      const tasks = snapshot.docs.map((doc) => ({
+        id: doc.id, // Include Firestore document ID
+        ...doc.data(),
+      }));
+      onTasksUpdate(tasks); // Pass tasks to the callback
+    },
+    (error) => {
+      console.error("Error fetching tasks in real-time:", error);
+    }
+  );
+  return stopListening;
 };
 
 // // function to remove Item from inventory

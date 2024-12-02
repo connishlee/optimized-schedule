@@ -11,6 +11,7 @@ import TaskForm from "@/app/components/testTaskForm";
 import Navbar from "@/app/components/navbar";
 
 import { getDayDate } from "@/app/helpers/getDate";
+import { readTasks } from "../../../../config/datacalls";
 
 export default function DashboardPage() {
   const [selectedDay, setSelectedDay] = useState("Sunday");
@@ -25,6 +26,22 @@ export default function DashboardPage() {
     Friday: [],
     Saturday: [],
   });
+
+  useEffect(() => {
+    const updateTasks = (retrievedTasks) => {
+      const groupedTasks = retrievedTasks.reduce((acc, task) => {
+        if (task.day) {
+          if (!acc[task.day]) acc[task.day] = [];
+          acc[task.day].push(task);
+        }
+        return acc;
+      }, {});
+
+      setTasks(groupedTasks);
+    };
+    const stopListening = readTasks(updateTasks);
+    return () => stopListening();
+  }, []);
 
   return (
     <div className="min-h-screen bg-black text-white">
