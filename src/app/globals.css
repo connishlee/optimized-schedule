@@ -20,12 +20,15 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
-.clerk-dev-mode-banner {
-  display: none !important;
+.cl-internal-1dauvpw {
+  background-color: #1a1a1a;
 }
 
+.cl-footerAction cl-footerAction__signIn {
+  background-color: #1a1a1a;
+}
 .cl-footer {
-  @apply bg-black text-gray-400;
+  background: #1a1a1a;
 }
 
 .scrollbar-transparent::-webkit-scrollbar-track {
