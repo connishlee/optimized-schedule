@@ -18,7 +18,7 @@ export default function TaskForm({ selectedDay, date }) {
     startTime: "",
     endTime: "",
     day: selectedDay || "",
-    date: date || "",
+    date: date,
     userId: user?.id || "",
   });
 
@@ -48,8 +48,8 @@ export default function TaskForm({ selectedDay, date }) {
         description: "",
         startTime: "",
         endTime: "",
-        day: "",
-        date: "",
+        day: selectedDay,
+        date: getDayDate(selectedDay),
         userId: user?.id,
       });
     } catch (error) {

@@ -1,4 +1,12 @@
-import { collection, addDoc, query, onSnapshot, doc, writeBatch, updateDoc } from "firebase/firestore";
+import {
+  collection,
+  addDoc,
+  deleteDoc,
+  onSnapshot,
+  doc,
+  writeBatch,
+  updateDoc,
+} from "firebase/firestore";
 import { db } from "./firebase";
 
 export const addTasks = async (newTask, user) => {
@@ -16,15 +24,13 @@ export const addTasks = async (newTask, user) => {
       day: newTask.day,
       userId: user.id,
       createdAt: new Date(),
-      priority: 0, // Adding default priority
+      priority: 0,
     });
   }
 };
 
-// Your existing readTasks function
 export const readTasks = (onTasksUpdate) => {
   const tasksCollection = collection(db, "tasks");
-  // listens for updates
   const stopListening = onSnapshot(
     tasksCollection,
     (snapshot) => {
@@ -41,10 +47,9 @@ export const readTasks = (onTasksUpdate) => {
   return stopListening;
 };
 
-// New function to update multiple task priorities at once
 export const updateTaskPriorities = async (taskPriorityUpdates) => {
   const batch = writeBatch(db);
-  
+
   taskPriorityUpdates.forEach(({ taskId, priority }) => {
     const taskRef = doc(db, "tasks", taskId);
     batch.update(taskRef, { priority });
@@ -59,7 +64,6 @@ export const updateTaskPriorities = async (taskPriorityUpdates) => {
   }
 };
 
-// New function to update single task priority
 export const updateTaskPriority = async (taskId, priority) => {
   try {
     const taskRef = doc(db, "tasks", taskId);
@@ -71,7 +75,73 @@ export const updateTaskPriority = async (taskId, priority) => {
   }
 };
 
-// Your commented out delItems function
-// export const delItems = async (id) => {
-//   await deleteDoc(doc(db, "inventory", id));
-// };
+export const updateTask = async (taskId, updatedTaskData) => {
+  try {
+    if (!taskId) {
+      throw new Error("Task ID is required");
+    }
+
+    const taskRef = doc(db, "tasks", taskId);
+    await updateDoc(taskRef, {
+      ...updatedTaskData,
+      updatedAt: new Date(), // Optional: Track when the task was last updated
+    });
+    return true;
+  } catch (error) {
+    console.error("Error updating task:", error);
+    return false;
+  }
+};
+
+// Delete a task
+export const deleteTask = async (taskId) => {
+  try {
+    if (!taskId) {
+      throw new Error("Task ID is required");
+    }
+
+    const taskRef = doc(db, "tasks", taskId);
+    await deleteDoc(taskRef);
+    return true;
+  } catch (error) {
+    console.error("Error deleting task:", error);
+    return false;
+  }
+};
+
+// Mark a task as completed
+export const markTaskCompleted = async (taskId) => {
+  try {
+    if (!taskId) {
+      throw new Error("Task ID is required");
+    }
+
+    const taskRef = doc(db, "tasks", taskId);
+    await updateDoc(taskRef, {
+      isCompleted: true,
+      completedAt: new Date(),
+    });
+    return true;
+  } catch (error) {
+    console.error("Error marking task as completed:", error);
+    return false;
+  }
+};
+
+// Batch delete tasks
+export const deleteTasks = async (taskIds) => {
+  const batch = writeBatch(db);
+
+  taskIds.forEach((taskId) => {
+    const taskRef = doc(db, "tasks", taskId);
+    batch.delete(taskRef);
+  });
+
+  try {
+    await batch.commit();
+    return true;
+  } catch (error) {
+    console.error("Error deleting multiple tasks:", error);
+    return false;
+  }
+};

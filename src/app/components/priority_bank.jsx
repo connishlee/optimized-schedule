@@ -1,6 +1,6 @@
 "use client";
-import React, { useState, useEffect } from 'react';
-import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
+import React, { useState, useEffect } from "react";
+import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 import Tasks from "./tasks";
 import { readTasks } from "../../../config/datacalls";
 
@@ -29,14 +29,16 @@ const PriorityBank = () => {
 
   return (
     <div className="p-8 w-full">
-      <div className="bg-gray-900 rounded-lg p-6 shadow-lg">
+      <div className="bg-gray-900 rounded-lg p-6 shadow-lg h-full flex flex-col">
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-2xl font-bold">Priority Rankings</h2>
           {isUpdating && (
-            <span className="text-sm text-gray-400">Updating priorities...</span>
+            <span className="text-sm text-gray-400">
+              Updating priorities...
+            </span>
           )}
         </div>
-        
+
         <DragDropContext onDragEnd={handleDragEnd}>
           <Droppable droppableId="priority-list">
             {(provided) => (
@@ -57,19 +59,42 @@ const PriorityBank = () => {
                         {...provided.draggableProps}
                         className={`
                           relative bg-gray-800 rounded-lg shadow-md
-                          ${snapshot.isDragging ? 'opacity-75' : 'opacity-100'}
+                          ${snapshot.isDragging ? "opacity-75" : "opacity-100"}
                           transition-all duration-200
                         `}
                       >
                         {/* Drag Handle */}
-                        <div 
+                        <div
                           {...provided.dragHandleProps}
                           className="absolute left-0 top-0 bottom-0 w-8 flex items-center justify-center cursor-grab active:cursor-grabbing"
                         >
-                          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-gray-400">
-                            <circle cx="12" cy="7" r="1"/>
-                            <circle cx="12" cy="12" r="1"/>
-                            <circle cx="12" cy="17" r="1"/>
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="24"
+                            height="24"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            className="text-gray-400"
+                          >
+                            <circle
+                              cx="12"
+                              cy="7"
+                              r="1"
+                            />
+                            <circle
+                              cx="12"
+                              cy="12"
+                              r="1"
+                            />
+                            <circle
+                              cx="12"
+                              cy="17"
+                              r="1"
+                            />
                           </svg>
                         </div>
 
