@@ -7,7 +7,7 @@ import Tasks from "@/app/components/tasks";
 // import TaskForm from "@/app/components/TaskForm";
 
 //test task Form
-import TaskForm from "@/app/components/testTaskForm";
+import TaskForm from "@/app/components/TaskForm";
 import Navbar from "@/app/components/navbar";
 
 import { getDayDate } from "@/app/helpers/getDate";
@@ -51,7 +51,7 @@ export default function DashboardPage() {
         <div className="flex-1 p-8">
           <h1 className="text-3xl font-bold mb-12">Schedule</h1>
 
-          <div className="grid grid-cols-2 ml-60">
+          <div className="grid grid-cols-2 ml-36">
             <div>
               {[
                 "Sunday",
@@ -86,7 +86,13 @@ export default function DashboardPage() {
             {/* Tasks List */}
             <div className="flex-1 ml-8">
               {/* Scrollable container */}
-              <div className="space-y-4 w-128 bg-gray-900 pl-8 rounded-lg max-h-[560px] overflow-y-auto shadow-md scrollbar-track-black scrollbar-thumb-rounded-full scrollbar-track-transparent">
+              <button
+                className="bg-gray-500 rounded h-10 p-2"
+                onClick={() => setOpenMenu(!openMenu)}
+              >
+                Add Tasks
+              </button>
+              <div className="space-y-4 my-4 w-128 bg-gray-900 pl-8 rounded-lg max-h-[500px] overflow-y-auto shadow-md scrollbar-track-black scrollbar-thumb-rounded-full scrollbar-track-transparent">
                 {tasks[selectedDay]?.map((task, index) => (
                   <Tasks
                     data={task}
@@ -98,18 +104,13 @@ export default function DashboardPage() {
           </div>
         </div>
 
-        {/* button to open and close menu */}
-        {/* <button onClick={() => setOpenMenu(!openMenu)}>Edit</button> */}
-        <TaskForm />
-        {/* beginning of sidebar div */}
-        {/* <div
+        <div
           className={`fixed inset-y-0 right-0 w-[400px] bg-[#1a1a1a] transform transition-transform duration-300 ease-in-out ${
             openMenu ? "translate-x-0" : "translate-x-full"
           }`}
         >
           {openMenu && <TaskForm selectedDay={selectedDay} />}
-        </div> */}
-        {/* End of sidebar */}
+        </div>
       </div>
     </div>
   );

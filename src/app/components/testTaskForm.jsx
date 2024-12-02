@@ -2,7 +2,7 @@ import { useUser } from "@clerk/nextjs";
 import { addTasks, readTasks } from "../../../config/datacalls";
 
 export default function TaskForm() {
-  const { user } = useUser(); // Fetch user info client-side
+  const { user } = useUser();
 
   const handleSubmit = async () => {
     if (!user) {
@@ -17,7 +17,7 @@ export default function TaskForm() {
       endTime: "12:00",
       date: "2024-12-02",
       day: "Sunday",
-      userId: user.id, // Pass userId
+      userId: user.id,
     };
 
     try {
