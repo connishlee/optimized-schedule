@@ -6,7 +6,7 @@ import { useUser } from "@clerk/nextjs";
 import { addTasks } from "../../../config/datacalls";
 import { getDayDate } from "@/app/helpers/getDate"; // Helper function to format date
 
-export default function TaskForm({ selectedDay, setSelectedDay }) {
+export default function TaskForm({ selectedDay, isOpen }) {
   const router = useRouter();
   const [task, setTask] = useState({
     name: "",
@@ -51,7 +51,7 @@ export default function TaskForm({ selectedDay, setSelectedDay }) {
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl font-bold">{task.day}</h2>
           <button
-            onClick={() => setSelectedDay(null)} // Close modal
+            onClick={() => isOpen} // Close modal
             className="text-gray-400 hover:text-white"
           >
             ✕

@@ -3,10 +3,6 @@ import { useState, useEffect } from "react";
 
 import Tasks from "@/app/components/tasks";
 
-//working task Form
-// import TaskForm from "@/app/components/TaskForm";
-
-//test task Form
 import TaskForm from "@/app/components/TaskForm";
 import Navbar from "@/app/components/navbar";
 
@@ -87,7 +83,7 @@ export default function DashboardPage() {
             <div className="flex-1 ml-8">
               {/* Scrollable container */}
               <button
-                className="bg-gray-500 rounded h-10 p-2"
+                className="bg-gray-500 rounded h-10 p-2 hover:bg-gray-800"
                 onClick={() => setOpenMenu(!openMenu)}
               >
                 Add Tasks
@@ -109,7 +105,12 @@ export default function DashboardPage() {
             openMenu ? "translate-x-0" : "translate-x-full"
           }`}
         >
-          {openMenu && <TaskForm selectedDay={selectedDay} />}
+          {openMenu && (
+            <TaskForm
+              selectedDay={selectedDay}
+              isOpen={() => setOpenMenu(opennMenu)}
+            />
+          )}
         </div>
       </div>
     </div>
