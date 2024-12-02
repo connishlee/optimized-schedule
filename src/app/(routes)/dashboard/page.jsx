@@ -46,7 +46,7 @@ export default function DashboardPage() {
         <div className="flex-1 p-8">
           <h1 className="text-3xl font-bold mb-12">Schedule</h1>
 
-          <div className="grid grid-cols-2 ml-36">
+          <div className="grid grid-cols-2">
             <div>
               {[
                 "Sunday",
@@ -81,7 +81,7 @@ export default function DashboardPage() {
             {/* Tasks List */}
             <div className="flex-1 ml-8">
               {/* Scrollable container */}
-              <div className="space-y-4 my-4 w-128 bg-gray-900 pl-8 rounded-lg max-h-[500px] overflow-y-auto shadow-md scrollbar-track-black scrollbar-thumb-rounded-full scrollbar-track-transparent">
+              <div className="space-y-4 w-128 bg-gray-900 pl-8 rounded-lg max-h-[576px] overflow-y-auto shadow-md scrollbar-track-black scrollbar-thumb-rounded-full scrollbar-track-transparent">
                 {tasks[selectedDay]?.map((task, index) => (
                   <Tasks
                     data={task}
@@ -98,7 +98,12 @@ export default function DashboardPage() {
             selectedDay ? "translate-x-0" : "translate-x-full"
           }`}
         >
-          {selectedDay && <TaskForm selectedDay={selectedDay} />}
+          {selectedDay && (
+            <TaskForm
+              selectedDay={selectedDay}
+              date={getDayDate(selectedDay)}
+            />
+          )}
         </div>
       </div>
     </div>

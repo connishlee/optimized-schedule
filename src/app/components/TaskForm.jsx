@@ -6,7 +6,8 @@ import { useUser } from "@clerk/nextjs";
 import { addTasks } from "../../../config/datacalls";
 import { getDayDate } from "@/app/helpers/getDate";
 
-export default function TaskForm({ selectedDay, closeModal }) {
+export default function TaskForm({ selectedDay, date }) {
+  console.log("date: " + date);
   const router = useRouter();
   const { user } = useUser();
 
@@ -17,8 +18,8 @@ export default function TaskForm({ selectedDay, closeModal }) {
     startTime: "",
     endTime: "",
     day: selectedDay || "",
-    date: selectedDay ? getDayDate(selectedDay) : "",
-    userId: user?.id || "", // User ID from Clerk
+    date: date || "",
+    userId: user?.id || "",
   });
 
   // Handle input changes for all fields
@@ -62,15 +63,9 @@ export default function TaskForm({ selectedDay, closeModal }) {
       {/* Modal Header */}
       <div className="p-6 border-b border-gray-800">
         <div className="flex justify-between items-center mb-4">
-          <h2 className="text-xl font-bold">{task.day}</h2>
-          <button
-            onClick={closeModal} // Close the modal
-            className="text-gray-400 hover:text-white"
-          >
-            ✕
-          </button>
+          <h2 className="text-xl font-bold">{selectedDay}</h2>
         </div>
-        <div className="text-sm text-gray-500">{task.date}</div>
+        <div className="text-sm text-gray-500">{date}</div>
       </div>
 
       {/* Modal Form */}
