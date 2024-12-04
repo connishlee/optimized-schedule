@@ -1,73 +1,40 @@
-"use client";
-import { useState } from "react";
-import { SignOutButton } from "./signOut";
-import Link from "next/link";
-import IconDashboard from "../icons/dashboardIcon";
-import IconHamburger from "../icons/hamburgerIcon";
-import IconCheck from "../icons/checkIcon";
+import { LayoutDashboard, Menu, Calendar, LogOut } from "lucide-react";
 
-const Navbar = () => {
-  const [open, setOpen] = useState(false);
-
+export default function Navbar({ isOpen, toggleNav }) {
   return (
-    <div className="flex">
+    <div className="fixed left-0 h-screen bg-white border-r border-gray-100 flex flex-col justify-between">
       <div
-        className={`${
-          open ? "w-60" : "w-20"
-        } flex flex-col justify-between transition-all ease-in-out h-screen bg-slate-700`}
+        className={`${isOpen ? "w-64" : "w-16"} transition-all duration-300`}
       >
-        <div>
-          <div
-            onClick={() => setOpen(!open)}
-            className="cursor-pointer"
-          >
-            <IconHamburger open={open} />
-          </div>
+        <button
+          onClick={toggleNav}
+          className="w-full p-5 hover:bg-gray-50 transition-colors border-b border-gray-100"
+        >
+          <Menu className="w-5 h-5 text-gray-700" />
+        </button>
 
-          {/* Dashboard Link */}
-          <Link
+        <div className="py-8 space-y-2">
+          <a
             href="/dashboard"
-            className="block"
+            className="flex items-center px-5 py-3 text-gray-700 hover:bg-gray-50"
           >
-            <div
-              className={`flex items-center gap-4 mt-6 ${
-                open ? "flex-row" : "flex-col"
-              } cursor-pointer hover:bg-slate-600 p-4 rounded-lg transition-colors`}
-            >
-              <IconDashboard className="text-white duration-500" />
-              {open && (
-                <h1 className="text-white font-bold text-lg duration-500">
-                  Dashboard
-                </h1>
-              )}
-            </div>
-          </Link>
-
-          {/* Priority Link */}
-          <Link
+            <LayoutDashboard className="w-5 h-5" />
+            {isOpen && <span className="ml-3">Dashboard</span>}
+          </a>
+          <a
             href="/priority"
-            className="block"
+            className="flex items-center px-5 py-3 text-gray-700 hover:bg-gray-50"
           >
-            <div
-              className={`flex items-center gap-4 mt-6 ${
-                open ? "flex-row" : "flex-col"
-              } cursor-pointer hover:bg-slate-600 p-4 rounded-lg transition-colors`}
-            >
-              <IconCheck className="text-white duration-500" />
-              {open && (
-                <h1 className="text-white font-bold text-lg duration-500">
-                  Priority
-                </h1>
-              )}
-            </div>
-          </Link>
+            <Calendar className="w-5 h-5" />
+            {isOpen && <span className="ml-3">Priority Bank</span>}
+          </a>
         </div>
-
-        {/* Bottom Section */}
-        <SignOutButton isOpen={open} />
       </div>
+
+      <button className="w-full p-5 hover:bg-gray-50 transition-colors border-t border-gray-100 text-gray-700 flex items-center justify-center">
+        <LogOut className="w-5 h-5" />
+        {isOpen && <span className="ml-3">Sign Out</span>}
+      </button>
     </div>
   );
-};
-
-export default Navbar;
+}
