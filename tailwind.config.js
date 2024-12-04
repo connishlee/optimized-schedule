@@ -10,7 +10,7 @@ module.exports = {
         2: "repeat(2, 0.25fr)",
       },
       width: {
-        128: "26rem",
+        128: "33rem",
       },
     },
   },
