@@ -1,10 +1,342 @@
+// // // "use client";
+// // // import { useState } from "react";
+// // // import {
+// // //   updateTask,
+// // //   deleteTask,
+// // //   markTaskCompleted,
+// // // } from "../../../config/datacalls";
+
+// // // function formatTime(time) {
+// // //   const [hours, minutes] = time.split(":");
+// // //   const amPm = parseInt(hours) >= 12 ? "PM" : "AM";
+// // //   const formattedHours = parseInt(hours) % 12 || 12;
+// // //   return `${formattedHours}:${minutes} ${amPm}`;
+// // // }
+
+// // // export default function Tasks({ data }) {
+// // //   const [isEditing, setIsEditing] = useState(false);
+// // //   const [editedTask, setEditedTask] = useState({
+// // //     name: data.name,
+// // //     description: data.description,
+// // //     startTime: data.startTime,
+// // //     endTime: data.endTime,
+// // //   });
+
+// // //   const handleUpdate = async () => {
+// // //     try {
+// // //       const result = await updateTask(data.id, {
+// // //         name: editedTask.name,
+// // //         description: editedTask.description,
+// // //         startTime: editedTask.startTime,
+// // //         endTime: editedTask.endTime,
+// // //       });
+
+// // //       if (result) {
+// // //         setIsEditing(false);
+// // //       }
+// // //     } catch (error) {
+// // //       console.error("Error updating task:", error);
+// // //     }
+// // //   };
+
+// // //   const handleDelete = async () => {
+// // //     try {
+// // //       const result = await deleteTask(data.id);
+// // //       if (!result) {
+// // //         console.error("Failed to delete task");
+// // //       }
+// // //     } catch (error) {
+// // //       console.error("Error deleting task:", error);
+// // //     }
+// // //   };
+
+// // //   const handleComplete = async () => {
+// // //     try {
+// // //       const result = await markTaskCompleted(data.id);
+// // //       if (!result) {
+// // //         console.error("Failed to mark task as completed");
+// // //       }
+// // //     } catch (error) {
+// // //       console.error("Error marking task as completed:", error);
+// // //     }
+// // //   };
+
+// // //   return (
+// // //     <div
+// // //       className={`
+// // //         p-6 rounded-lg transition-all duration-300 
+// // //         ${
+// // //           data.isCompleted
+// // //             ? "opacity-50 line-through bg-gray-800"
+// // //             : "bg-gray-800"
+// // //         }
+// // //       `}
+// // //     >
+// // //       {isEditing ? (
+// // //         <div className="space-y-4">
+// // //           <input
+// // //             type="text"
+// // //             value={editedTask.name}
+// // //             onChange={(e) =>
+// // //               setEditedTask({ ...editedTask, name: e.target.value })
+// // //             }
+// // //             className="w-full p-2 bg-gray-700 rounded text-white"
+// // //             placeholder="Task Name"
+// // //           />
+// // //           <textarea
+// // //             value={editedTask.description}
+// // //             onChange={(e) =>
+// // //               setEditedTask({ ...editedTask, description: e.target.value })
+// // //             }
+// // //             className="w-full p-2 bg-gray-700 rounded text-white"
+// // //             placeholder="Description"
+// // //           />
+// // //           <div className="flex space-x-2">
+// // //             <input
+// // //               type="time"
+// // //               value={editedTask.startTime}
+// // //               onChange={(e) =>
+// // //                 setEditedTask({ ...editedTask, startTime: e.target.value })
+// // //               }
+// // //               className="p-2 bg-gray-700 rounded text-white"
+// // //             />
+// // //             <input
+// // //               type="time"
+// // //               value={editedTask.endTime}
+// // //               onChange={(e) =>
+// // //                 setEditedTask({ ...editedTask, endTime: e.target.value })
+// // //               }
+// // //               className="p-2 bg-gray-700 rounded text-white"
+// // //             />
+// // //           </div>
+// // //           <div className="flex space-x-2">
+// // //             <button
+// // //               onClick={handleUpdate}
+// // //               className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+// // //             >
+// // //               Save
+// // //             </button>
+// // //             <button
+// // //               onClick={() => setIsEditing(false)}
+// // //               className="bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-700"
+// // //             >
+// // //               Cancel
+// // //             </button>
+// // //           </div>
+// // //         </div>
+// // //       ) : (
+// // //         <div>
+// // //           <div className="flex justify-between items-start">
+// // //             <div>
+// // //               <h3 className="text-xl font-semibold">{data.name}</h3>
+// // //               <p className="text-gray-400 mt-2">{data.description}</p>
+// // //               <div className="mt-2 text-sm text-gray-500">
+// // //                 {formatTime(data.startTime)} - {formatTime(data.endTime)}
+// // //               </div>
+// // //             </div>
+// // //             <div className="flex space-x-2">
+// // //               <button
+// // //                 onClick={() => setIsEditing(true)}
+// // //                 className="text-blue-400 hover:text-blue-300"
+// // //                 title="Edit Task"
+// // //               >
+// // //                 ✏️
+// // //               </button>
+// // //               <button
+// // //                 onClick={handleComplete}
+// // //                 className="text-green-400 hover:text-green-300"
+// // //                 title="Mark Complete"
+// // //               >
+// // //                 ✓
+// // //               </button>
+// // //               <button
+// // //                 onClick={handleDelete}
+// // //                 className="text-red-400 hover:text-red-300"
+// // //                 title="Delete Task"
+// // //               >
+// // //                 🗑️
+// // //               </button>
+// // //             </div>
+// // //           </div>
+// // //         </div>
+// // //       )}
+// // //     </div>
+// // //   );
+// // // }
+
+// // "use client";
+// // import { useState } from "react";
+// // import {
+// //   updateTask,
+// //   deleteTask,
+// //   markTaskCompleted,
+// // } from "../../../config/datacalls";
+
+// // function formatTime(time) {
+// //   const [hours, minutes] = time.split(":");
+// //   const amPm = parseInt(hours) >= 12 ? "PM" : "AM";
+// //   const formattedHours = parseInt(hours) % 12 || 12;
+// //   return `${formattedHours}:${minutes} ${amPm}`;
+// // }
+
+// // export default function Tasks({ data }) {
+// //   const [isEditing, setIsEditing] = useState(false);
+// //   const [editedTask, setEditedTask] = useState({
+// //     name: data.name,
+// //     description: data.description,
+// //     startTime: data.startTime,
+// //     endTime: data.endTime,
+// //   });
+
+// //   const handleUpdate = async () => {
+// //     try {
+// //       const result = await updateTask(data.id, {
+// //         name: editedTask.name,
+// //         description: editedTask.description,
+// //         startTime: editedTask.startTime,
+// //         endTime: editedTask.endTime,
+// //       });
+
+// //       if (result) {
+// //         setIsEditing(false);
+// //       }
+// //     } catch (error) {
+// //       console.error("Error updating task:", error);
+// //     }
+// //   };
+
+// //   const handleDelete = async () => {
+// //     try {
+// //       const result = await deleteTask(data.id);
+// //       if (!result) {
+// //         console.error("Failed to delete task");
+// //       }
+// //     } catch (error) {
+// //       console.error("Error deleting task:", error);
+// //     }
+// //   };
+
+// //   const handleComplete = async () => {
+// //     try {
+// //       // Pass the opposite of current completion status to toggle it
+// //       const result = await markTaskCompleted(data.id, !data.isCompleted);
+// //       if (!result) {
+// //         console.error("Failed to toggle task completion status");
+// //       }
+// //     } catch (error) {
+// //       console.error("Error toggling task completion:", error);
+// //     }
+// //   };
+
+// //   return (
+// //     <div
+// //       className={`
+// //         p-6 rounded-lg transition-all duration-300 
+// //         ${data.isCompleted ? "opacity-50 bg-gray-800" : "bg-gray-800"}
+// //       `}
+// //     >
+// //       {isEditing ? (
+// //         <div className="space-y-4">
+// //           <input
+// //             type="text"
+// //             value={editedTask.name}
+// //             onChange={(e) =>
+// //               setEditedTask({ ...editedTask, name: e.target.value })
+// //             }
+// //             className="w-full p-2 bg-gray-700 rounded text-white"
+// //             placeholder="Task Name"
+// //           />
+// //           <textarea
+// //             value={editedTask.description}
+// //             onChange={(e) =>
+// //               setEditedTask({ ...editedTask, description: e.target.value })
+// //             }
+// //             className="w-full p-2 bg-gray-700 rounded text-white"
+// //             placeholder="Description"
+// //           />
+// //           <div className="flex space-x-2">
+// //             <input
+// //               type="time"
+// //               value={editedTask.startTime}
+// //               onChange={(e) =>
+// //                 setEditedTask({ ...editedTask, startTime: e.target.value })
+// //               }
+// //               className="p-2 bg-gray-700 rounded text-white"
+// //             />
+// //             <input
+// //               type="time"
+// //               value={editedTask.endTime}
+// //               onChange={(e) =>
+// //                 setEditedTask({ ...editedTask, endTime: e.target.value })
+// //               }
+// //               className="p-2 bg-gray-700 rounded text-white"
+// //             />
+// //           </div>
+// //           <div className="flex space-x-2">
+// //             <button
+// //               onClick={handleUpdate}
+// //               className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+// //             >
+// //               Save
+// //             </button>
+// //             <button
+// //               onClick={() => setIsEditing(false)}
+// //               className="bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-700"
+// //             >
+// //               Cancel
+// //             </button>
+// //           </div>
+// //         </div>
+// //       ) : (
+// //         <div>
+// //           <div className="flex justify-between items-start">
+// //             <div>
+// //               <h3 className={`text-xl font-semibold ${data.isCompleted ? "line-through" : ""}`}>
+// //                 {data.name}
+// //               </h3>
+// //               <p className={`text-gray-400 mt-2 ${data.isCompleted ? "line-through" : ""}`}>
+// //                 {data.description}
+// //               </p>
+// //               <div className="mt-2 text-sm text-gray-500">
+// //                 {formatTime(data.startTime)} - {formatTime(data.endTime)}
+// //               </div>
+// //             </div>
+// //             <div className="flex space-x-2">
+// //               <button
+// //                 onClick={() => setIsEditing(true)}
+// //                 className="text-blue-400 hover:text-blue-300"
+// //                 title="Edit Task"
+// //               >
+// //                 ✏️
+// //               </button>
+// //               <button
+// //                 onClick={handleComplete}
+// //                 className={`${
+// //                   data.isCompleted ? "text-yellow-400 hover:text-yellow-300" : "text-green-400 hover:text-green-300"
+// //                 }`}
+// //                 title={data.isCompleted ? "Mark Incomplete" : "Mark Complete"}
+// //               >
+// //                 {data.isCompleted ? "↩️" : "✓"}
+// //               </button>
+// //               <button
+// //                 onClick={handleDelete}
+// //                 className="text-red-400 hover:text-red-300"
+// //                 title="Delete Task"
+// //               >
+// //                 🗑️
+// //               </button>
+// //             </div>
+// //           </div>
+// //         </div>
+// //       )}
+// //     </div>
+// //   );
+// // }
+
 // "use client";
 // import { useState } from "react";
-// import {
-//   updateTask,
-//   deleteTask,
-//   markTaskCompleted,
-// } from "../../../config/datacalls";
+// import { updateTask, deleteTask, updateTaskStatus } from "../../../config/datacalls";
+// import { TASK_CATEGORIES, PRIORITY_LEVELS, TASK_STATUS } from "../../../config/datacalls";
 
 // function formatTime(time) {
 //   const [hours, minutes] = time.split(":");
@@ -20,6 +352,8 @@
 //     description: data.description,
 //     startTime: data.startTime,
 //     endTime: data.endTime,
+//     category: data.category || "personal",
+//     priorityLevel: data.priorityLevel || "medium",
 //   });
 
 //   const handleUpdate = async () => {
@@ -29,6 +363,8 @@
 //         description: editedTask.description,
 //         startTime: editedTask.startTime,
 //         endTime: editedTask.endTime,
+//         category: editedTask.category,
+//         priorityLevel: editedTask.priorityLevel,
 //       });
 
 //       if (result) {
@@ -50,26 +386,40 @@
 //     }
 //   };
 
-//   const handleComplete = async () => {
+//   const handleStatusChange = async (newStatus) => {
 //     try {
-//       const result = await markTaskCompleted(data.id);
-//       if (!result) {
-//         console.error("Failed to mark task as completed");
+//       let completionPercentage = 0;
+//       switch (newStatus) {
+//         case "notStarted":
+//           completionPercentage = 0;
+//           break;
+//         case "inProgress":
+//           completionPercentage = 50;
+//           break;
+//         case "completed":
+//           completionPercentage = 100;
+//           break;
 //       }
+      
+//       await updateTaskStatus(data.id, newStatus, completionPercentage);
 //     } catch (error) {
-//       console.error("Error marking task as completed:", error);
+//       console.error("Error updating task status:", error);
 //     }
+//   };
+
+//   const getCategoryColor = (category) => {
+//     return TASK_CATEGORIES[category]?.color || TASK_CATEGORIES.personal.color;
+//   };
+
+//   const getPriorityColor = (priority) => {
+//     return PRIORITY_LEVELS[priority]?.color || PRIORITY_LEVELS.medium.color;
 //   };
 
 //   return (
 //     <div
 //       className={`
 //         p-6 rounded-lg transition-all duration-300 
-//         ${
-//           data.isCompleted
-//             ? "opacity-50 line-through bg-gray-800"
-//             : "bg-gray-800"
-//         }
+//         ${data.status === "completed" ? "opacity-50 bg-gray-800" : "bg-gray-800"}
 //       `}
 //     >
 //       {isEditing ? (
@@ -77,17 +427,40 @@
 //           <input
 //             type="text"
 //             value={editedTask.name}
-//             onChange={(e) =>
-//               setEditedTask({ ...editedTask, name: e.target.value })
-//             }
+//             onChange={(e) => setEditedTask({ ...editedTask, name: e.target.value })}
 //             className="w-full p-2 bg-gray-700 rounded text-white"
 //             placeholder="Task Name"
 //           />
+
+//           <div className="grid grid-cols-2 gap-4">
+//             <select
+//               value={editedTask.category}
+//               onChange={(e) => setEditedTask({ ...editedTask, category: e.target.value })}
+//               className="p-2 bg-gray-700 rounded text-white"
+//             >
+//               {Object.entries(TASK_CATEGORIES).map(([value, { label }]) => (
+//                 <option key={value} value={value}>
+//                   {label}
+//                 </option>
+//               ))}
+//             </select>
+
+//             <select
+//               value={editedTask.priorityLevel}
+//               onChange={(e) => setEditedTask({ ...editedTask, priorityLevel: e.target.value })}
+//               className="p-2 bg-gray-700 rounded text-white"
+//             >
+//               {Object.entries(PRIORITY_LEVELS).map(([value, { label }]) => (
+//                 <option key={value} value={value}>
+//                   {label}
+//                 </option>
+//               ))}
+//             </select>
+//           </div>
+
 //           <textarea
 //             value={editedTask.description}
-//             onChange={(e) =>
-//               setEditedTask({ ...editedTask, description: e.target.value })
-//             }
+//             onChange={(e) => setEditedTask({ ...editedTask, description: e.target.value })}
 //             className="w-full p-2 bg-gray-700 rounded text-white"
 //             placeholder="Description"
 //           />
@@ -95,17 +468,13 @@
 //             <input
 //               type="time"
 //               value={editedTask.startTime}
-//               onChange={(e) =>
-//                 setEditedTask({ ...editedTask, startTime: e.target.value })
-//               }
+//               onChange={(e) => setEditedTask({ ...editedTask, startTime: e.target.value })}
 //               className="p-2 bg-gray-700 rounded text-white"
 //             />
 //             <input
 //               type="time"
 //               value={editedTask.endTime}
-//               onChange={(e) =>
-//                 setEditedTask({ ...editedTask, endTime: e.target.value })
-//               }
+//               onChange={(e) => setEditedTask({ ...editedTask, endTime: e.target.value })}
 //               className="p-2 bg-gray-700 rounded text-white"
 //             />
 //           </div>
@@ -127,27 +496,56 @@
 //       ) : (
 //         <div>
 //           <div className="flex justify-between items-start">
-//             <div>
-//               <h3 className="text-xl font-semibold">{data.name}</h3>
+//             <div className="flex-1">
+//               <div className="flex items-center gap-2 mb-2">
+//                 <h3 className="text-xl font-semibold">{data.name}</h3>
+//                 <span
+//                   className="px-2 py-0.5 text-xs rounded-full"
+//                   style={{ backgroundColor: getCategoryColor(data.category) }}
+//                 >
+//                   {TASK_CATEGORIES[data.category]?.label || "Personal"}
+//                 </span>
+//                 <span
+//                   className="px-2 py-0.5 text-xs rounded-full"
+//                   style={{ backgroundColor: getPriorityColor(data.priorityLevel) }}
+//                 >
+//                   {PRIORITY_LEVELS[data.priorityLevel]?.label || "Medium"}
+//                 </span>
+//               </div>
 //               <p className="text-gray-400 mt-2">{data.description}</p>
 //               <div className="mt-2 text-sm text-gray-500">
 //                 {formatTime(data.startTime)} - {formatTime(data.endTime)}
 //               </div>
+
+//               {/* Progress Bar */}
+//               <div className="mt-3">
+//                 <div className="w-full bg-gray-700 rounded-full h-2.5">
+//                   <div
+//                     className="bg-blue-600 h-2.5 rounded-full"
+//                     style={{ width: `${data.completionPercentage || 0}%` }}
+//                   ></div>
+//                 </div>
+//               </div>
 //             </div>
-//             <div className="flex space-x-2">
+
+//             <div className="flex flex-col space-y-2">
+//               <select
+//                 value={data.status || "notStarted"}
+//                 onChange={(e) => handleStatusChange(e.target.value)}
+//                 className="p-1 bg-gray-700 rounded text-sm text-white"
+//               >
+//                 {Object.entries(TASK_STATUS).map(([value, label]) => (
+//                   <option key={value} value={value}>
+//                     {label}
+//                   </option>
+//                 ))}
+//               </select>
 //               <button
 //                 onClick={() => setIsEditing(true)}
 //                 className="text-blue-400 hover:text-blue-300"
 //                 title="Edit Task"
 //               >
 //                 ✏️
-//               </button>
-//               <button
-//                 onClick={handleComplete}
-//                 className="text-green-400 hover:text-green-300"
-//                 title="Mark Complete"
-//               >
-//                 ✓
 //               </button>
 //               <button
 //                 onClick={handleDelete}
@@ -164,13 +562,11 @@
 //   );
 // }
 
+
 "use client";
 import { useState } from "react";
-import {
-  updateTask,
-  deleteTask,
-  markTaskCompleted,
-} from "../../../config/datacalls";
+import { updateTask, deleteTask, updateTaskStatus } from "../../../config/datacalls";
+import { DEFAULT_TASK_CATEGORIES, PRIORITY_LEVELS, TASK_STATUS } from "../../../config/datacalls";
 
 function formatTime(time) {
   const [hours, minutes] = time.split(":");
@@ -186,6 +582,8 @@ export default function Tasks({ data }) {
     description: data.description,
     startTime: data.startTime,
     endTime: data.endTime,
+    category: data.category || "personal",
+    priorityLevel: data.priorityLevel || "medium",
   });
 
   const handleUpdate = async () => {
@@ -195,6 +593,8 @@ export default function Tasks({ data }) {
         description: editedTask.description,
         startTime: editedTask.startTime,
         endTime: editedTask.endTime,
+        category: editedTask.category,
+        priorityLevel: editedTask.priorityLevel,
       });
 
       if (result) {
@@ -216,23 +616,40 @@ export default function Tasks({ data }) {
     }
   };
 
-  const handleComplete = async () => {
+  const handleStatusChange = async (newStatus) => {
     try {
-      // Pass the opposite of current completion status to toggle it
-      const result = await markTaskCompleted(data.id, !data.isCompleted);
-      if (!result) {
-        console.error("Failed to toggle task completion status");
+      let completionPercentage = 0;
+      switch (newStatus) {
+        case "notStarted":
+          completionPercentage = 0;
+          break;
+        case "inProgress":
+          completionPercentage = 50;
+          break;
+        case "completed":
+          completionPercentage = 100;
+          break;
       }
+      
+      await updateTaskStatus(data.id, newStatus, completionPercentage);
     } catch (error) {
-      console.error("Error toggling task completion:", error);
+      console.error("Error updating task status:", error);
     }
+  };
+
+  const getCategoryColor = (category) => {
+    return DEFAULT_TASK_CATEGORIES[category]?.color || DEFAULT_TASK_CATEGORIES.personal.color;
+  };
+
+  const getPriorityColor = (priority) => {
+    return PRIORITY_LEVELS[priority]?.color || PRIORITY_LEVELS.medium.color;
   };
 
   return (
     <div
       className={`
         p-6 rounded-lg transition-all duration-300 
-        ${data.isCompleted ? "opacity-50 bg-gray-800" : "bg-gray-800"}
+        ${data.status === "completed" ? "opacity-50 bg-gray-800" : "bg-gray-800"}
       `}
     >
       {isEditing ? (
@@ -240,38 +657,59 @@ export default function Tasks({ data }) {
           <input
             type="text"
             value={editedTask.name}
-            onChange={(e) =>
-              setEditedTask({ ...editedTask, name: e.target.value })
-            }
+            onChange={(e) => setEditedTask({ ...editedTask, name: e.target.value })}
             className="w-full p-2 bg-gray-700 rounded text-white"
             placeholder="Task Name"
           />
+
+          <div className="grid grid-cols-2 gap-4">
+            <select
+              value={editedTask.category}
+              onChange={(e) => setEditedTask({ ...editedTask, category: e.target.value })}
+              className="p-2 bg-gray-700 rounded text-white"
+            >
+              {Object.entries(DEFAULT_TASK_CATEGORIES).map(([value, { label }]) => (
+                <option key={value} value={value}>
+                  {label}
+                </option>
+              ))}
+            </select>
+
+            <select
+              value={editedTask.priorityLevel}
+              onChange={(e) => setEditedTask({ ...editedTask, priorityLevel: e.target.value })}
+              className="p-2 bg-gray-700 rounded text-white"
+            >
+              {Object.entries(PRIORITY_LEVELS).map(([value, { label }]) => (
+                <option key={value} value={value}>
+                  {label}
+                </option>
+              ))}
+            </select>
+          </div>
+
           <textarea
             value={editedTask.description}
-            onChange={(e) =>
-              setEditedTask({ ...editedTask, description: e.target.value })
-            }
+            onChange={(e) => setEditedTask({ ...editedTask, description: e.target.value })}
             className="w-full p-2 bg-gray-700 rounded text-white"
             placeholder="Description"
           />
+          
           <div className="flex space-x-2">
             <input
               type="time"
               value={editedTask.startTime}
-              onChange={(e) =>
-                setEditedTask({ ...editedTask, startTime: e.target.value })
-              }
+              onChange={(e) => setEditedTask({ ...editedTask, startTime: e.target.value })}
               className="p-2 bg-gray-700 rounded text-white"
             />
             <input
               type="time"
               value={editedTask.endTime}
-              onChange={(e) =>
-                setEditedTask({ ...editedTask, endTime: e.target.value })
-              }
+              onChange={(e) => setEditedTask({ ...editedTask, endTime: e.target.value })}
               className="p-2 bg-gray-700 rounded text-white"
             />
           </div>
+          
           <div className="flex space-x-2">
             <button
               onClick={handleUpdate}
@@ -290,33 +728,57 @@ export default function Tasks({ data }) {
       ) : (
         <div>
           <div className="flex justify-between items-start">
-            <div>
-              <h3 className={`text-xl font-semibold ${data.isCompleted ? "line-through" : ""}`}>
-                {data.name}
-              </h3>
-              <p className={`text-gray-400 mt-2 ${data.isCompleted ? "line-through" : ""}`}>
-                {data.description}
-              </p>
+            <div className="flex-1">
+              <div className="flex items-center gap-2 mb-2">
+                <h3 className="text-xl font-semibold">{data.name}</h3>
+                <span
+                  className="px-2 py-0.5 text-xs rounded-full text-white"
+                  style={{ backgroundColor: getCategoryColor(data.category) }}
+                >
+                  {DEFAULT_TASK_CATEGORIES[data.category]?.label || "Personal"}
+                </span>
+                <span
+                  className="px-2 py-0.5 text-xs rounded-full text-white"
+                  style={{ backgroundColor: getPriorityColor(data.priorityLevel) }}
+                >
+                  {PRIORITY_LEVELS[data.priorityLevel]?.label || "Medium"}
+                </span>
+              </div>
+              
+              <p className="text-gray-400 mt-2">{data.description}</p>
               <div className="mt-2 text-sm text-gray-500">
                 {formatTime(data.startTime)} - {formatTime(data.endTime)}
               </div>
+
+              {/* Progress Bar */}
+              <div className="mt-3">
+                <div className="w-full bg-gray-700 rounded-full h-2.5">
+                  <div
+                    className="bg-blue-600 h-2.5 rounded-full transition-all duration-300"
+                    style={{ width: `${data.completionPercentage || 0}%` }}
+                  ></div>
+                </div>
+              </div>
             </div>
-            <div className="flex space-x-2">
+
+            <div className="flex flex-col space-y-2">
+              <select
+                value={data.status || "notStarted"}
+                onChange={(e) => handleStatusChange(e.target.value)}
+                className="p-1 bg-gray-700 rounded text-sm text-white"
+              >
+                {Object.entries(TASK_STATUS).map(([value, label]) => (
+                  <option key={value} value={value}>
+                    {label}
+                  </option>
+                ))}
+              </select>
               <button
                 onClick={() => setIsEditing(true)}
                 className="text-blue-400 hover:text-blue-300"
                 title="Edit Task"
               >
                 ✏️
-              </button>
-              <button
-                onClick={handleComplete}
-                className={`${
-                  data.isCompleted ? "text-yellow-400 hover:text-yellow-300" : "text-green-400 hover:text-green-300"
-                }`}
-                title={data.isCompleted ? "Mark Incomplete" : "Mark Complete"}
-              >
-                {data.isCompleted ? "↩️" : "✓"}
               </button>
               <button
                 onClick={handleDelete}
@@ -332,3 +794,4 @@ export default function Tasks({ data }) {
     </div>
   );
 }
+
