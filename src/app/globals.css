@@ -32,5 +32,5 @@ body {
 }
 
 .scrollbar-transparent::-webkit-scrollbar-track {
-  background-color: transparent; /* Transparent track */
+  background-color: transparent;
 }

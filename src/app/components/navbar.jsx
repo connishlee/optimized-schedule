@@ -23,9 +23,12 @@ const Navbar = () => {
           >
             <IconHamburger open={open} />
           </div>
-          
+
           {/* Dashboard Link */}
-          <Link href="/dashboard" className="block">
+          <Link
+            href="/dashboard"
+            className="block"
+          >
             <div
               className={`flex items-center gap-4 mt-6 ${
                 open ? "flex-row" : "flex-col"
@@ -41,7 +44,10 @@ const Navbar = () => {
           </Link>
 
           {/* Priority Link */}
-          <Link href="/priority" className="block">
+          <Link
+            href="/priority"
+            className="block"
+          >
             <div
               className={`flex items-center gap-4 mt-6 ${
                 open ? "flex-row" : "flex-col"
