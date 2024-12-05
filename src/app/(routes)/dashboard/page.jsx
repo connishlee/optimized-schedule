@@ -1,131 +1,179 @@
 "use client";
 import { useState, useEffect } from "react";
-import Tasks from "@/app/components/tasks";
-import TaskForm from "@/app/components/TaskForm";
-import Navbar from "@/app/components/navbar";
-import TaskProgress from "@/app/components/TaskProgress";
-import { getDayDate } from "@/app/helpers/getDate";
-import { readTasks } from "../../../../config/datacalls";
+import Navbar from "../../components/navbar";
+import TaskForm from "../../components/TaskForm";
+import TaskProgress from "../../components/TaskProgress";
+import TaskCard from "../../components/TaskCard";
+import { Plus } from "lucide-react";
+import {
+  readTasks,
+  addTasks,
+  updateTask,
+  updateTaskStatus,
+} from "../../../../config/datacalls";
 
-export default function DashboardPage() {
-  const [selectedDay, setSelectedDay] = useState("Sunday");
+export default function Dashboard() {
+  const [isNavOpen, setIsNavOpen] = useState(true);
+  const [selectedDay, setSelectedDay] = useState("Monday");
+  const [showTaskForm, setShowTaskForm] = useState(false);
+  const [editingTask, setEditingTask] = useState(null);
+  const [tasks, setTasks] = useState([]);
 
-  const [tasks, setTasks] = useState({
-    Sunday: [],
-    Monday: [],
-    Tuesday: [],
-    Wednesday: [],
-    Thursday: [],
-    Friday: [],
-    Saturday: [],
-  });
+  const days = [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+  ];
 
   useEffect(() => {
-    const updateTasks = (retrievedTasks) => {
-      const groupedTasks = retrievedTasks.reduce((acc, task) => {
-        if (task.day) {
-          if (!acc[task.day]) acc[task.day] = [];
-          acc[task.day].push(task);
-        }
-        return acc;
-      }, {});
+    const unsubscribe = readTasks((retrievedTasks) => {
+      setTasks(retrievedTasks);
+    });
 
-      setTasks(groupedTasks);
-    };
-    const stopListening = readTasks(updateTasks);
-    return () => stopListening();
+    return () => unsubscribe();
   }, []);
 
+  const filteredTasks = tasks.filter((task) => task.day === selectedDay);
+
+  const calculateTaskStats = () => {
+    const completedTasks = tasks.filter(
+      (task) => task.status === "completed"
+    ).length;
+    const totalTasks = tasks.length;
+    const remainingTasks = totalTasks - completedTasks;
+    const completionPercentage =
+      totalTasks > 0 ? (completedTasks / totalTasks) * 100 : 0;
+
+    return {
+      completed: completedTasks,
+      total: totalTasks,
+      remaining: remainingTasks,
+      percentage: completionPercentage,
+    };
+  };
+
+  const handleAddTask = async (newTask) => {
+    try {
+      await addTasks(newTask, { id: "current-user-id" });
+      setShowTaskForm(false);
+    } catch (error) {
+      console.error("Error adding task:", error);
+    }
+  };
+
+  const handleEditTask = async (updatedTask) => {
+    try {
+      await updateTask(updatedTask.id, updatedTask);
+      setEditingTask(null);
+    } catch (error) {
+      console.error("Error updating task:", error);
+    }
+  };
+
+  const handleStatusChange = async (taskId, newStatus) => {
+    try {
+      let completionPercentage = 0;
+      switch (newStatus) {
+        case "notStarted":
+          completionPercentage = 0;
+          break;
+        case "inProgress":
+          completionPercentage = 50;
+          break;
+        case "completed":
+          completionPercentage = 100;
+          break;
+      }
+      await updateTaskStatus(taskId, newStatus, completionPercentage);
+    } catch (error) {
+      console.error("Error updating task status:", error);
+    }
+  };
+
   return (
-    <div className="min-h-screen bg-black text-white">
-      <div className="flex">
-        <Navbar />
-        <div className="flex-1 p-8">
-          <div className="mb-8">
-            <TaskProgress />
+    <div className="min-h-screen bg-gray-50">
+      <Navbar
+        isOpen={isNavOpen}
+        toggleNav={() => setIsNavOpen(!isNavOpen)}
+      />
+
+      <main
+        className={`transition-all duration-300 ${
+          isNavOpen ? "ml-64" : "ml-16"
+        } p-8`}
+      >
+        <div className="max-w-7xl mx-auto">
+          <div className="mb-12">
+            <TaskProgress stats={calculateTaskStats()} />
           </div>
-
-          <h1 className="text-3xl font-bold mb-2">Schedule</h1>
-
-          <div className="grid grid-cols-2">
-            <div>
-              {[
-                "Sunday",
-                "Monday",
-                "Tuesday",
-                "Wednesday",
-                "Thursday",
-                "Friday",
-              ].map((day) => (
-                <div
-                  key={day}
-                  onClick={() => setSelectedDay(day)}
-                  className={`
-                  p-4 mb-4 w-72 rounded-lg transition-all duration-200
-                  ${selectedDay === day ? "bg-[#1e2a3d]" : ""}
-                  hover:bg-slate-700 cursor-pointer
-                  group
-                `}
-                >
-                  <div className="flex flex-col">
-                    <span className="text-xl font-md group-hover:text-white">
-                      {day}
-                    </span>
-                    <span className="text-sm text-gray-500">
-                      {getDayDate(day)}
-                    </span>
-                    {/* {tasks[day]?.length > 0 && (
-                      <div className="mt-2">
-                        <div className="text-xs text-gray-400 mb-1">
-                          {tasks[day].filter((task) => task.isCompleted).length}{" "}
-                          of {tasks[day].length} completed
-                        </div>
-                        <div className="w-full bg-gray-700 rounded-full h-1.5">
-                          <div
-                            className="bg-purple-600 h-1.5 rounded-full transition-all duration-300"
-                            style={{
-                              width: `${
-                                (tasks[day].filter((task) => task.isCompleted)
-                                  .length /
-                                  tasks[day].length) *
-                                100
-                              }%`,
-                            }}
-                          />
-                        </div>
-                      </div>
-                    )} */}
-                  </div>
-                </div>
-              ))}
+          <div className="mb-8">
+            <div className="flex justify-between items-center mb-6">
+              <h1 className="text-2xl font-bold">Schedule</h1>
+              <button
+                onClick={() => setShowTaskForm(true)}
+                className="flex items-center space-x-2 text-sm hover:bg-gray-100 px-4 py-2 rounded-lg transition-colors"
+              >
+                <Plus className="w-4 h-4" />
+                <span>Add Task</span>
+              </button>
             </div>
 
-            <div className="flex-1 ml-8">
-              <div className="space-y-4 w-128 bg-gray-900 pl-8 rounded-lg max-h-[560px] overflow-y-auto shadow-md scrollbar-track-black scrollbar-thumb-rounded-full scrollbar-track-transparent">
-                {tasks[selectedDay]?.map((task, index) => (
-                  <Tasks
-                    data={task}
-                    key={index}
+            <div className="grid grid-cols-12 gap-8">
+              <div className="col-span-3 space-y-2">
+                {days.map((day) => (
+                  <button
+                    key={day}
+                    onClick={() => setSelectedDay(day)}
+                    className={`w-full text-left px-4 py-3 rounded-lg transition-colors ${
+                      selectedDay === day ? "bg-gray-200" : ""
+                    }`}
+                  >
+                    <span className="text-lg">{day}</span>
+                  </button>
+                ))}
+              </div>
+
+              <div className="col-span-9 h-[calc(100vh-24rem)] overflow-y-auto pr-4 space-y-4">
+                {filteredTasks.map((task) => (
+                  <TaskCard
+                    key={task.id}
+                    task={task}
+                    onStatusChange={handleStatusChange}
+                    onEdit={setEditingTask}
+                    onDelete={() => {}} // Empty function since deletion is handled in TaskCard
                   />
                 ))}
+                {filteredTasks.length === 0 && (
+                  <div className="text-gray-500 text-center py-8">
+                    No tasks scheduled for {selectedDay}
+                  </div>
+                )}
               </div>
             </div>
           </div>
         </div>
+      </main>
 
-        <div
-          className={`fixed inset-y-0 right-0 w-[400px] bg-[#1a1a1a] transform transition-transform duration-300 ease-in-out ${
-            selectedDay ? "translate-x-0" : "translate-x-full"
-          }`}
-        >
-          {selectedDay && (
-            <TaskForm
-              selectedDay={selectedDay}
-              date={getDayDate(selectedDay)}
-            />
-          )}
-        </div>
-      </div>
+      {/* Modals */}
+      {showTaskForm && (
+        <TaskForm
+          onClose={() => setShowTaskForm(false)}
+          onSubmit={handleAddTask}
+          selectedDay={selectedDay}
+        />
+      )}
+
+      {editingTask && (
+        <TaskForm
+          initialData={editingTask}
+          onClose={() => setEditingTask(null)}
+          onSubmit={handleEditTask}
+          selectedDay={selectedDay}
+        />
+      )}
     </div>
   );
 }

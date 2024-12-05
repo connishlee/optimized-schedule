@@ -94,10 +94,8 @@ export default function Tasks({ data }) {
   return (
     <div
       className={`
-        p-6 rounded-lg transition-all duration-300 
-        ${
-          data.status === "completed" ? "opacity-50 bg-gray-800" : "bg-gray-800"
-        }
+        rounded-lg transition-all duration-300 
+        ${data.status === "completed" ? "opacity-50" : ""}
       `}
     >
       {isEditing ? (
@@ -108,7 +106,7 @@ export default function Tasks({ data }) {
             onChange={(e) =>
               setEditedTask({ ...editedTask, name: e.target.value })
             }
-            className="w-full p-2 bg-gray-700 rounded text-white"
+            className="w-full p-2 bg-gray-100 rounded border border-gray-200 text-gray-900"
             placeholder="Task Name"
           />
 
@@ -118,7 +116,7 @@ export default function Tasks({ data }) {
               onChange={(e) =>
                 setEditedTask({ ...editedTask, category: e.target.value })
               }
-              className="p-2 bg-gray-700 rounded text-white"
+              className="p-2 bg-gray-100 rounded border border-gray-200 text-gray-900"
             >
               {Object.entries(DEFAULT_TASK_CATEGORIES).map(
                 ([value, { label }]) => (
@@ -137,7 +135,7 @@ export default function Tasks({ data }) {
               onChange={(e) =>
                 setEditedTask({ ...editedTask, priorityLevel: e.target.value })
               }
-              className="p-2 bg-gray-700 rounded text-white"
+              className="p-2 bg-gray-100 rounded border border-gray-200 text-gray-900"
             >
               {Object.entries(PRIORITY_LEVELS).map(([value, { label }]) => (
                 <option
@@ -155,7 +153,7 @@ export default function Tasks({ data }) {
             onChange={(e) =>
               setEditedTask({ ...editedTask, description: e.target.value })
             }
-            className="w-full p-2 bg-gray-700 rounded text-white"
+            className="w-full p-2 bg-gray-100 rounded border border-gray-200 text-gray-900"
             placeholder="Description"
           />
 
@@ -166,7 +164,7 @@ export default function Tasks({ data }) {
               onChange={(e) =>
                 setEditedTask({ ...editedTask, startTime: e.target.value })
               }
-              className="p-2 bg-gray-700 rounded text-white"
+              className="p-2 bg-gray-100 rounded border border-gray-200 text-gray-900"
             />
             <input
               type="time"
@@ -174,20 +172,20 @@ export default function Tasks({ data }) {
               onChange={(e) =>
                 setEditedTask({ ...editedTask, endTime: e.target.value })
               }
-              className="p-2 bg-gray-700 rounded text-white"
+              className="p-2 bg-gray-100 rounded border border-gray-200 text-gray-900"
             />
           </div>
 
           <div className="flex space-x-2">
             <button
               onClick={handleUpdate}
-              className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+              className="bg-blue-100 text-blue-800 px-4 py-2 rounded hover:bg-blue-200"
             >
               Save
             </button>
             <button
               onClick={() => setIsEditing(false)}
-              className="bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-700"
+              className="bg-gray-100 text-gray-800 px-4 py-2 rounded hover:bg-gray-200"
             >
               Cancel
             </button>
@@ -198,7 +196,9 @@ export default function Tasks({ data }) {
           <div className="flex justify-between items-start">
             <div className="flex-1">
               <div className="flex items-center gap-2 mb-2">
-                <h3 className="text-xl font-semibold">{data.name}</h3>
+                <h3 className="text-xl font-semibold text-gray-900">
+                  {data.name}
+                </h3>
                 <span
                   className="px-2 py-0.5 text-xs rounded-full text-white"
                   style={{ backgroundColor: getCategoryColor(data.category) }}
@@ -215,14 +215,13 @@ export default function Tasks({ data }) {
                 </span>
               </div>
 
-              <p className="text-gray-400 mt-2">{data.description}</p>
+              <p className="text-gray-600 mt-2">{data.description}</p>
               <div className="mt-2 text-sm text-gray-500">
                 {formatTime(data.startTime)} - {formatTime(data.endTime)}
               </div>
 
-              {/* Progress Bar */}
               <div className="mt-3">
-                <div className="w-full bg-gray-700 rounded-full h-2.5">
+                <div className="w-full bg-gray-200 rounded-full h-2.5">
                   <div
                     className="bg-blue-600 h-2.5 rounded-full transition-all duration-300"
                     style={{ width: `${data.completionPercentage || 0}%` }}
@@ -235,7 +234,7 @@ export default function Tasks({ data }) {
               <select
                 value={data.status || "notStarted"}
                 onChange={(e) => handleStatusChange(e.target.value)}
-                className="p-1 bg-gray-700 rounded text-sm text-white"
+                className="p-1 ml-2 bg-gray-100 rounded border border-gray-200 text-sm text-gray-900"
               >
                 {Object.entries(TASK_STATUS).map(([value, label]) => (
                   <option
@@ -248,14 +247,14 @@ export default function Tasks({ data }) {
               </select>
               <button
                 onClick={() => setIsEditing(true)}
-                className="text-blue-400 hover:text-blue-300"
+                className="text-blue-600 hover:text-blue-700"
                 title="Edit Task"
               >
                 ✏️
               </button>
               <button
                 onClick={handleDelete}
-                className="text-red-400 hover:text-red-300"
+                className="text-red-600 hover:text-red-700"
                 title="Delete Task"
               >
                 🗑️
