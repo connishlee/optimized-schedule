@@ -1,145 +1,10 @@
-// "use client";
-// import React, { useState, useEffect } from "react";
-// import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
-// import Tasks from "./tasks";
-// import { readTasks } from "../../../config/datacalls";
-
-// const PriorityBank = () => {
-//   const [tasks, setTasks] = useState([]);
-//   const [isUpdating, setIsUpdating] = useState(false);
-
-//   useEffect(() => {
-//     const updateTasks = (retrievedTasks) => {
-//       setTasks(retrievedTasks);
-//     };
-
-//     const stopListening = readTasks(updateTasks);
-//     return () => stopListening();
-//   }, []);
-
-//   const handleDragEnd = (result) => {
-//     if (!result.destination) return;
-
-//     const reorderedTasks = Array.from(tasks);
-//     const [removed] = reorderedTasks.splice(result.source.index, 1);
-//     reorderedTasks.splice(result.destination.index, 0, removed);
-
-//     setTasks(reorderedTasks);
-//   };
-
-//   return (
-//     <div className="p-8 w-full">
-//       <div className="bg-gray-900 rounded-lg p-6 shadow-lg h-full flex flex-col">
-//         <div className="flex justify-between items-center mb-6">
-//           <h2 className="text-2xl font-bold">Priority Rankings</h2>
-//           {isUpdating && (
-//             <span className="text-sm text-gray-400">
-//               Updating priorities...
-//             </span>
-//           )}
-//         </div>
-
-//         <DragDropContext onDragEnd={handleDragEnd}>
-//           <Droppable droppableId="priority-list">
-//             {(provided) => (
-//               <div
-//                 {...provided.droppableProps}
-//                 ref={provided.innerRef}
-//                 className="space-y-4"
-//               >
-//                 {tasks.map((task, index) => (
-//                   <Draggable
-//                     key={task.id}
-//                     draggableId={task.id}
-//                     index={index}
-//                   >
-//                     {(provided, snapshot) => (
-//                       <div
-//                         ref={provided.innerRef}
-//                         {...provided.draggableProps}
-//                         className={`
-//                           relative bg-gray-800 rounded-lg shadow-md
-//                           ${snapshot.isDragging ? "opacity-75" : "opacity-100"}
-//                           transition-all duration-200
-//                         `}
-//                       >
-//                         {/* Drag Handle */}
-//                         <div
-//                           {...provided.dragHandleProps}
-//                           className="absolute left-0 top-0 bottom-0 w-8 flex items-center justify-center cursor-grab active:cursor-grabbing"
-//                         >
-//                           <svg
-//                             xmlns="http://www.w3.org/2000/svg"
-//                             width="24"
-//                             height="24"
-//                             viewBox="0 0 24 24"
-//                             fill="none"
-//                             stroke="currentColor"
-//                             strokeWidth="2"
-//                             strokeLinecap="round"
-//                             strokeLinejoin="round"
-//                             className="text-gray-400"
-//                           >
-//                             <circle
-//                               cx="12"
-//                               cy="7"
-//                               r="1"
-//                             />
-//                             <circle
-//                               cx="12"
-//                               cy="12"
-//                               r="1"
-//                             />
-//                             <circle
-//                               cx="12"
-//                               cy="17"
-//                               r="1"
-//                             />
-//                           </svg>
-//                         </div>
-
-//                         <div className="pl-10 p-4">
-//                           <div className="flex items-center justify-between">
-//                             <div className="flex items-center space-x-4">
-//                               <span className="text-lg font-semibold text-gray-400">
-//                                 #{index + 1}
-//                               </span>
-//                               <div className="flex-1">
-//                                 <Tasks data={task} />
-//                               </div>
-//                             </div>
-//                             <div className="text-sm text-gray-400">
-//                               {task.day}
-//                             </div>
-//                           </div>
-//                         </div>
-//                       </div>
-//                     )}
-//                   </Draggable>
-//                 ))}
-//                 {provided.placeholder}
-//               </div>
-//             )}
-//           </Droppable>
-//         </DragDropContext>
-
-//         <div className="mt-4 p-4 bg-gray-800 rounded">
-//           <p className="text-sm text-gray-400">
-//             Total tasks loaded: {tasks.length}
-//           </p>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default PriorityBank;
-
 "use client";
+
 import React, { useState, useEffect } from "react";
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 import Tasks from "./tasks";
 import { readTasks, updateTaskPriorities } from "../../../config/datacalls";
+import { GripVertical } from "lucide-react";
 
 const PriorityBank = () => {
   const [tasks, setTasks] = useState([]);
@@ -147,9 +12,8 @@ const PriorityBank = () => {
 
   useEffect(() => {
     const updateTasks = (retrievedTasks) => {
-      // Filter out completed tasks and sort by priority
       const activeTasks = retrievedTasks
-        .filter(task => !task.isCompleted)
+        .filter((task) => !task.isCompleted)
         .sort((a, b) => (a.priority || 0) - (b.priority || 0));
       setTasks(activeTasks);
     };
@@ -169,27 +33,41 @@ const PriorityBank = () => {
     setIsUpdating(true);
 
     try {
-      // Update priorities based on new order
       const priorityUpdates = reorderedTasks.map((task, index) => ({
         taskId: task.id,
-        priority: index
+        priority: index,
       }));
 
       await updateTaskPriorities(priorityUpdates);
     } catch (error) {
-      console.error('Error updating priorities:', error);
+      console.error("Error updating priorities:", error);
     } finally {
       setIsUpdating(false);
     }
   };
 
+  const getTagColor = (tag) => {
+    if (!tag) return "bg-gray-100 text-gray-800";
+
+    switch (tag.toString().toLowerCase()) {
+      case "personal":
+        return "bg-blue-100 text-blue-800";
+      case "work":
+        return "bg-purple-100 text-purple-800";
+      default:
+        return "bg-gray-100 text-gray-800";
+    }
+  };
+
   return (
-    <div className="p-8 w-full">
-      <div className="bg-gray-900 rounded-lg p-6 shadow-lg h-full flex flex-col">
+    <div className="p-8 w-full mt-16">
+      <div className="bg-white rounded-lg p-6 shadow-sm h-[calc(100vh-8rem)] flex flex-col max-w-4xl mx-auto">
         <div className="flex justify-between items-center mb-6">
-          <h2 className="text-2xl font-bold">Priority Rankings</h2>
+          <h2 className="text-2xl font-semibold text-gray-900">
+            Priority Rankings
+          </h2>
           {isUpdating && (
-            <span className="text-sm text-gray-400">
+            <span className="text-sm text-gray-500">
               Updating priorities...
             </span>
           )}
@@ -201,7 +79,7 @@ const PriorityBank = () => {
               <div
                 {...provided.droppableProps}
                 ref={provided.innerRef}
-                className="space-y-4"
+                className="flex-1 overflow-y-auto pr-4 space-y-3 min-h-0"
               >
                 {tasks.map((task, index) => (
                   <Draggable
@@ -214,45 +92,40 @@ const PriorityBank = () => {
                         ref={provided.innerRef}
                         {...provided.draggableProps}
                         className={`
-                          relative bg-gray-800 rounded-lg shadow-md
-                          ${snapshot.isDragging ? "opacity-75" : "opacity-100"}
+                          relative bg-white rounded-lg border border-gray-200
+                          ${snapshot.isDragging ? "shadow-lg" : "shadow-sm"}
                           transition-all duration-200
                         `}
                       >
-                        {/* Drag Handle */}
                         <div
                           {...provided.dragHandleProps}
                           className="absolute left-0 top-0 bottom-0 w-8 flex items-center justify-center cursor-grab active:cursor-grabbing"
                         >
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="24"
-                            height="24"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth="2"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            className="text-gray-400"
-                          >
-                            <circle cx="12" cy="7" r="1" />
-                            <circle cx="12" cy="12" r="1" />
-                            <circle cx="12" cy="17" r="1" />
-                          </svg>
+                          <GripVertical className="text-gray-400 w-4 h-4" />
                         </div>
 
                         <div className="pl-10 p-4">
                           <div className="flex items-center justify-between">
                             <div className="flex items-center space-x-4">
-                              <span className="text-lg font-semibold text-gray-400">
+                              <span className="text-lg font-medium text-gray-400">
                                 #{index + 1}
                               </span>
-                              <div className="flex-1">
+                              <div className="flex-1 space-y-2">
                                 <Tasks data={task} />
+                                <div className="flex gap-2">
+                                  {task.tag && (
+                                    <span
+                                      className={`px-2 py-1 rounded-full text-xs font-medium ${getTagColor(
+                                        task.tag
+                                      )}`}
+                                    >
+                                      {task.tag}
+                                    </span>
+                                  )}
+                                </div>
                               </div>
                             </div>
-                            <div className="text-sm text-gray-400">
+                            <div className="text-sm text-gray-500">
                               {task.day}
                             </div>
                           </div>
@@ -267,8 +140,8 @@ const PriorityBank = () => {
           </Droppable>
         </DragDropContext>
 
-        <div className="mt-4 p-4 bg-gray-800 rounded">
-          <p className="text-sm text-gray-400">
+        <div className="mt-4 p-4 bg-white rounded-lg border border-gray-200">
+          <p className="text-sm text-gray-600">
             Total active tasks: {tasks.length}
           </p>
         </div>

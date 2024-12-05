@@ -1,13 +1,15 @@
+"use client";
 import { useState } from "react";
 import { Edit2, Trash2 } from "lucide-react";
 import {
   updateTaskStatus,
   TASK_STATUS,
-  PRIORITY_LEVELS,
+  deleteTask,
 } from "../../../config/datacalls.js";
 
 export default function TaskCard({ task, onStatusChange, onEdit, onDelete }) {
   const [showActions, setShowActions] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const handleStatusChange = async (e) => {
     const newStatus = e.target.value;
@@ -27,6 +29,22 @@ export default function TaskCard({ task, onStatusChange, onEdit, onDelete }) {
 
     await updateTaskStatus(task.id, newStatus, completionPercentage);
     onStatusChange(task.id, newStatus);
+  };
+
+  const handleDelete = async () => {
+    try {
+      setIsDeleting(true);
+      const success = await deleteTask(task.id);
+      if (success) {
+        onDelete(task.id);
+      } else {
+        console.error("Failed to delete task");
+      }
+    } catch (error) {
+      console.error("Error deleting task:", error);
+    } finally {
+      setIsDeleting(false);
+    }
   };
 
   const getPriorityColor = (priorityLevel) => {
@@ -111,9 +129,11 @@ export default function TaskCard({ task, onStatusChange, onEdit, onDelete }) {
               <Edit2 className="w-4 h-4" />
             </button>
             <button
-              onClick={() => onDelete(task.id)}
+              onClick={handleDelete}
+              disabled={isDeleting}
               className="text-gray-400 hover:text-red-500 p-1.5 rounded-full 
-                hover:bg-red-50 transition-all duration-200 ease-in-out"
+                hover:bg-red-50 transition-all duration-200 ease-in-out
+                disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <Trash2 className="w-4 h-4" />
             </button>

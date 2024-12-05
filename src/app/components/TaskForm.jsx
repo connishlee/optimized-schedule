@@ -1,8 +1,10 @@
+"use client";
 import { useState } from "react";
 import { X } from "lucide-react";
 import {
   DEFAULT_TASK_CATEGORIES,
   PRIORITY_LEVELS,
+  updateTask,
 } from "../../../config/datacalls.js";
 
 export default function TaskForm({
@@ -20,10 +22,33 @@ export default function TaskForm({
       category: "work",
       status: "notStarted",
       priorityLevel: "medium",
-      day: selectedDay || "", // Add selected day from props
-      date: new Date().toISOString().split("T")[0], // Add current date
+      day: selectedDay || "",
+      date: new Date().toISOString().split("T")[0],
     }
   );
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      if (initialData) {
+        const success = await updateTask(initialData.id, {
+          ...task,
+          updatedAt: new Date(),
+        });
+
+        if (success) {
+          // If the update was successful, close the form
+          onClose();
+        }
+      } else {
+        // If we're creating a new task
+        await onSubmit(task);
+      }
+    } catch (error) {
+      console.error("Error saving task:", error);
+    }
+  };
 
   const days = [
     "Sunday",
@@ -46,10 +71,7 @@ export default function TaskForm({
         </div>
 
         <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            onSubmit(task);
-          }}
+          onSubmit={handleSubmit}
           className="space-y-4"
         >
           <input

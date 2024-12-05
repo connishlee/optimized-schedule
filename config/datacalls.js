@@ -10,7 +10,6 @@ import {
 } from "firebase/firestore";
 import { db } from "./firebase";
 
-// Default categories that are always available
 export const DEFAULT_TASK_CATEGORIES = {
   work: { label: "Work", color: "#4F46E5" },
   personal: { label: "Personal", color: "#059669" },
@@ -31,7 +30,6 @@ export const TASK_STATUS = {
   completed: "Completed",
 };
 
-// Function to add a custom category
 export const addCustomCategory = async (
   userId,
   categoryName,
@@ -57,7 +55,6 @@ export const addCustomCategory = async (
   }
 };
 
-// Function to get all categories (default + custom) for a user
 export const getUserCategories = (userId, onCategoriesUpdate) => {
   const customCategoriesRef = collection(
     db,
@@ -72,7 +69,6 @@ export const getUserCategories = (userId, onCategoriesUpdate) => {
       customCategories[doc.id] = doc.data();
     });
 
-    // Combine default and custom categories
     const allCategories = {
       ...DEFAULT_TASK_CATEGORIES,
       ...customCategories,
